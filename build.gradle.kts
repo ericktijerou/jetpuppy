@@ -7,6 +7,7 @@ buildscript {
     dependencies {
         classpath(ClassPaths.gradlePlugin)
         classpath(ClassPaths.kotlinPlugin)
+        classpath(ClassPaths.spotlessPlugin)
     }
 }
 

@@ -54,12 +54,14 @@ object Libs {
 object ClassPaths {
     const val gradlePlugin = "com.android.tools.build:gradle:${Versions.gradle}"
     const val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
+    const val spotlessPlugin = "com.diffplug.spotless:spotless-plugin-gradle:${Versions.spotless}"
 }
 
 object Plugins {
     const val androidApplication = "com.android.application"
     const val kotlinAndroid = "android"
     const val kotlinKapt = "kapt"
+    const val spotless = "com.diffplug.spotless"
 }
 
 object Configs {
@@ -84,4 +86,6 @@ object Versions {
     internal const val navigationCompose = "1.0.0-alpha07"
     const val kotlin = "1.4.30"
     const val compose = "1.0.0-beta01"
+    const val spotless = "5.10.0"
+    const val ktlint = "0.40.0"
 }

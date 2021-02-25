@@ -2,6 +2,7 @@ plugins {
     id(Plugins.androidApplication)
     kotlin(Plugins.kotlinAndroid)
     kotlin(Plugins.kotlinKapt)
+    id(Plugins.spotless)
 }
 
 android {
@@ -17,21 +18,22 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
+    signingConfigs {
         getByName("debug") {
-            isDebuggable = true
-            isMinifyEnabled = false
-            isShrinkResources = false
-            isTestCoverageEnabled = true
-
+            storeFile = rootProject.file("debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
         }
+    }
 
-        getByName("release") {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            isDebuggable = false
+    buildTypes {
+        debug {
+            signingConfig = signingConfigs.getByName("debug")
+        }
+        release {
+            isMinifyEnabled = false
             proguardFile(getDefaultProguardFile("proguard-android.txt"))
-            proguardFile(file("proguard-rules.pro"))
         }
     }
 
@@ -41,7 +43,7 @@ android {
     }
 
     packagingOptions {
-        resources.excludes.add("META-INF/*.kotlin_module")
+        resources.excludes.addAll(listOf("/META-INF/AL2.0", "/META-INF/LGPL2.1"))
     }
 
     kotlinOptions {
@@ -58,10 +60,35 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = false
+        aidl = false
+        renderScript = false
+        resValues = false
+        shaders = false
     }
 
     composeOptions {
         kotlinCompilerExtensionVersion = Versions.compose
+    }
+}
+
+spotless {
+    kotlin {
+        target("**/*.kt")
+        targetExclude("$buildDir/**/*.kt")
+        targetExclude("bin/**/*.kt")
+        ktlint(Versions.ktlint)
+        trimTrailingWhitespace()
+        indentWithSpaces()
+        endWithNewline()
+        licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
+    }
+    kotlinGradle {
+        target("**/*.gradle.kts", "*.gradle.kts")
+        ktlint(Versions.ktlint)
+        trimTrailingWhitespace()
+        indentWithSpaces()
+        endWithNewline()
     }
 }
 
