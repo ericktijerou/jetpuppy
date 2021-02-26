@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Jetpuppy</string>
+    <string name="label_skip">Skip</string>
+    <string name="label_next">Next</string>
+    <string name="label_get_started">Get started</string>
+    <string name="label_title_onboarding1">Each pet deserves a home</string>
+    <string name="label_subtitle_onboarding1">Every year thousands of animals get into shelters where they have complicated live.</string>
+    <string name="label_title_onboarding2">Save more that one life</string>
+    <string name="label_subtitle_onboarding2">By adoption, you\'re helping make space for another animal in need and giving them an opportunity to become beloved pets.</string>
+    <string name="label_title_onboarding3">Make a new friend</string>
+    <string name="label_subtitle_onboarding3">Shelter pets have so much love to give and they won\'t ever stop giving it to you once you let them into your heart.</string>
 </resources>

@@ -118,6 +118,9 @@ dependencies {
     implementation(Libs.Activity.activityCompose)
     implementation(Libs.ConstraintLayout.constraintLayoutCompose)
 
+    // Lottie
+    implementation(Libs.Lottie.compose)
+
     // Architecture Components
     implementation(Libs.Navigation.compose)
 

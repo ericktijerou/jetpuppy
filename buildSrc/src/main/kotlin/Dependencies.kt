@@ -45,9 +45,14 @@ object Libs {
     }
 
     object Accompanist {
-        private const val version = "0.5.1"
+        private const val version = "0.6.0"
         const val coil = "dev.chrisbanes.accompanist:accompanist-coil:$version"
         const val insets = "dev.chrisbanes.accompanist:accompanist-insets:$version"
+    }
+
+    object Lottie {
+        private const val version = "1.0.0-alpha07-SNAPSHOT"
+        const val compose = "com.airbnb.android:lottie-compose:$version"
     }
 }
 
@@ -81,9 +86,9 @@ object Versions {
     internal const val materialDesign = "1.3.0"
     internal const val coreKtx = "1.5.0-beta01"
     internal const val composePaging = "1.0.0-alpha07"
-    internal const val composeActivity = "1.3.0-alpha02"
-    internal const val composeConstraint = "1.0.0-alpha02"
-    internal const val navigationCompose = "1.0.0-alpha07"
+    internal const val composeActivity = "1.3.0-alpha03"
+    internal const val composeConstraint = "1.0.0-alpha03"
+    internal const val navigationCompose = "1.0.0-alpha08"
     const val kotlin = "1.4.30"
     const val compose = "1.0.0-beta01"
     const val spotless = "5.10.0"

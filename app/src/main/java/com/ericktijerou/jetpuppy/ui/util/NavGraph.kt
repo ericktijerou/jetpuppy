@@ -13,16 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ericktijerou.jetpuppy.ui.theme
+package com.ericktijerou.jetpuppy.ui.util
 
-import androidx.compose.ui.graphics.Color
-
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
-
-// Custom
-val TealOnboarding = Color(0xFF27AA9E)
-val PurpleOnboarding = Color(0xFF5054C1)
-val OrangeOnboarding = Color(0xFFEB7F64)
+sealed class Screen(val route: String) {
+    object Onboarding : Screen("onboarding")
+}
