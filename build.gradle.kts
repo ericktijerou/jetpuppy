@@ -8,6 +8,7 @@ buildscript {
         classpath(ClassPaths.gradlePlugin)
         classpath(ClassPaths.kotlinPlugin)
         classpath(ClassPaths.spotlessPlugin)
+        classpath(ClassPaths.daggerPlugin)
     }
 }
 

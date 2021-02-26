@@ -2,6 +2,7 @@ plugins {
     id(Plugins.androidApplication)
     kotlin(Plugins.kotlinAndroid)
     kotlin(Plugins.kotlinKapt)
+    id(Plugins.daggerHilt)
     id(Plugins.spotless)
 }
 
@@ -118,10 +119,18 @@ dependencies {
     implementation(Libs.Activity.activityCompose)
     implementation(Libs.ConstraintLayout.constraintLayoutCompose)
 
+    // Hilt + Dagger
+    implementation(Libs.Dagger.hiltAndroid)
+    implementation(Libs.Dagger.hiltViewModel)
+    implementation(Libs.Dagger.hiltNavigation)
+    kapt(Libs.Dagger.daggerCompiler)
+    kapt(Libs.Dagger.hiltCompiler)
+
     // Lottie
     implementation(Libs.Lottie.compose)
 
     // Architecture Components
+    implementation(Libs.Lifecycle.viewModelCompose)
     implementation(Libs.Navigation.compose)
 
     // Accompanist

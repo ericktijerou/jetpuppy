@@ -44,6 +44,10 @@ object Libs {
         const val compose = "androidx.navigation:navigation-compose:${Versions.navigationCompose}"
     }
 
+    object Lifecycle {
+        const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.composeViewModel}"
+    }
+
     object Accompanist {
         private const val version = "0.6.0"
         const val coil = "dev.chrisbanes.accompanist:accompanist-coil:$version"
@@ -54,12 +58,22 @@ object Libs {
         private const val version = "1.0.0-alpha07-SNAPSHOT"
         const val compose = "com.airbnb.android:lottie-compose:$version"
     }
+
+    object Dagger {
+        const val daggerCompiler = "com.google.dagger:hilt-android-compiler:${Versions.daggerHilt}"
+        const val hiltCompiler = "androidx.hilt:hilt-compiler:${Versions.daggerHiltAndroid}"
+        const val hiltViewModel = "androidx.hilt:hilt-lifecycle-viewmodel:${Versions.daggerHiltAndroid}"
+        const val hiltNavigation = "androidx.hilt:hilt-navigation-fragment:${Versions.daggerHiltAndroid}"
+        const val hiltAndroid = "com.google.dagger:hilt-android:${Versions.daggerHilt}"
+    }
+
 }
 
 object ClassPaths {
     const val gradlePlugin = "com.android.tools.build:gradle:${Versions.gradle}"
     const val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     const val spotlessPlugin = "com.diffplug.spotless:spotless-plugin-gradle:${Versions.spotless}"
+    const val daggerPlugin = "com.google.dagger:hilt-android-gradle-plugin:${Versions.daggerHilt}"
 }
 
 object Plugins {
@@ -67,6 +81,7 @@ object Plugins {
     const val kotlinAndroid = "android"
     const val kotlinKapt = "kapt"
     const val spotless = "com.diffplug.spotless"
+    const val daggerHilt = "dagger.hilt.android.plugin"
 }
 
 object Configs {
@@ -89,6 +104,9 @@ object Versions {
     internal const val composeActivity = "1.3.0-alpha03"
     internal const val composeConstraint = "1.0.0-alpha03"
     internal const val navigationCompose = "1.0.0-alpha08"
+    internal const val daggerHilt = "2.31-alpha"
+    internal const val daggerHiltAndroid = "1.0.0-alpha03"
+    internal const val composeViewModel = "1.0.0-alpha01"
     const val kotlin = "1.4.30"
     const val compose = "1.0.0-beta01"
     const val spotless = "5.10.0"
