@@ -15,6 +15,20 @@
  */
 package com.ericktijerou.jetpuppy.ui.util
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.HiltViewModelFactory
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavBackStackEntry
+
 sealed class Screen(val route: String) {
     object Onboarding : Screen("onboarding")
+    object Feed : Screen("feed")
+}
+
+@Composable
+inline fun <reified VM : ViewModel> NavBackStackEntry.hiltNavGraphViewModel(): VM {
+    val viewModelFactory = HiltViewModelFactory(LocalContext.current, this)
+    return ViewModelProvider(this, viewModelFactory).get(VM::class.java)
 }

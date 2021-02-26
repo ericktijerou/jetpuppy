@@ -18,11 +18,15 @@ package com.ericktijerou.jetpuppy.ui
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigate
+import androidx.navigation.compose.popUpTo
 import androidx.navigation.compose.rememberNavController
+import com.ericktijerou.jetpuppy.ui.feed.FeedScreen
 import com.ericktijerou.jetpuppy.ui.onboarding.OnboardingPage
 import com.ericktijerou.jetpuppy.ui.onboarding.OnboardingScreen
 import com.ericktijerou.jetpuppy.ui.theme.JetpuppyTheme
 import com.ericktijerou.jetpuppy.ui.util.Screen
+import com.ericktijerou.jetpuppy.ui.util.hiltNavGraphViewModel
 import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
 
 @Composable
@@ -30,12 +34,27 @@ fun JetpuppyApp() {
     ProvideWindowInsets {
         JetpuppyTheme {
             val navController = rememberNavController()
-            NavHost(navController, startDestination = Screen.Onboarding.route) {
+            NavHost(navController, startDestination = Screen.Feed.route) {
                 composable(Screen.Onboarding.route) {
                     OnboardingScreen(
-                        navController = navController,
-                        listOf(OnboardingPage.Page1, OnboardingPage.Page2, OnboardingPage.Page3)
-                    )
+                        items = listOf(
+                            OnboardingPage.Page1,
+                            OnboardingPage.Page2,
+                            OnboardingPage.Page3
+                        ),
+                        viewModel = it.hiltNavGraphViewModel()
+                    ) {
+                        navController.navigate(route = Screen.Feed.route) {
+                            popUpTo(Screen.Onboarding.route) { inclusive = true }
+                        }
+                    }
+                }
+                composable(Screen.Feed.route) {
+                    FeedScreen(viewModel = it.hiltNavGraphViewModel()) {
+                        navController.navigate(route = Screen.Onboarding.route) {
+                            popUpTo(Screen.Feed.route) { inclusive = true }
+                        }
+                    }
                 }
             }
         }

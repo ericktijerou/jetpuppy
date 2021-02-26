@@ -20,36 +20,43 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
+import com.ericktijerou.jetpuppy.ui.util.LocalSysUiController
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = BlackLight,
+    primaryVariant = BlackLight,
+    secondary = Teal200,
+    background = Color.Black,
+    surface = Color.Black,
+    onPrimary = Color.White,
+    onSecondary = Color.White,
+    onBackground = Color.White,
+    onSurface = Color.White
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
-
-    /* Other default colors to override
+    primary = Color.White,
+    primaryVariant = Color.White,
+    secondary = Teal200,
     background = Color.White,
     surface = Color.White,
-    onPrimary = Color.White,
+    onPrimary = Color.Black,
     onSecondary = Color.Black,
     onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
+    onSurface = Color.Black
 )
 
 @Composable
 fun JetpuppyTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
+    val colors = if (darkTheme) DarkColorPalette else LightColorPalette
+    val sysUiController = LocalSysUiController.current
+    SideEffect {
+        sysUiController.setSystemBarsColor(
+            color = colors.primary
+        )
     }
-
     MaterialTheme(
         colors = colors,
         typography = typography,

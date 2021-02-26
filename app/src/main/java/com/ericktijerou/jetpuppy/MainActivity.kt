@@ -26,7 +26,9 @@ import com.ericktijerou.jetpuppy.ui.JetpuppyApp
 import com.ericktijerou.jetpuppy.ui.theme.JetpuppyTheme
 import com.ericktijerou.jetpuppy.ui.util.LocalSysUiController
 import com.ericktijerou.jetpuppy.ui.util.SystemUiController
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -23,6 +23,7 @@ val Purple700 = Color(0xFF3700B3)
 val Teal200 = Color(0xFF03DAC5)
 
 // Custom
+val BlackLight = Color(0xFF161617)
 val TealOnboarding = Color(0xFF27AA9E)
 val PurpleOnboarding = Color(0xFF5054C1)
 val OrangeOnboarding = Color(0xFFEB7F64)

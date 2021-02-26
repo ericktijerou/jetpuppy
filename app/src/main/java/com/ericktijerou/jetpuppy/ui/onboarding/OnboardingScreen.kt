@@ -27,6 +27,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -42,6 +43,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -54,7 +56,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.navigation.NavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieAnimationSpec
 import com.airbnb.lottie.compose.rememberLottieAnimationState
@@ -64,10 +65,13 @@ import com.ericktijerou.jetpuppy.ui.util.PagerState
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun OnboardingScreen(navController: NavController, items: List<OnboardingPage>) {
+fun OnboardingScreen(items: List<OnboardingPage>, viewModel: OnboardingViewModel, skip: () -> Unit = {}) {
     val pagerState = remember { PagerState() }
     pagerState.maxPage = (items.size - 1).coerceAtLeast(0)
-
+    val skipInternal = {
+        skip()
+        viewModel.setOnboarding()
+    }
     val onboardingPage = items[pagerState.currentPage]
     val backgroundColor by animateColorAsState(
         onboardingPage.color,
@@ -106,7 +110,8 @@ fun OnboardingScreen(navController: NavController, items: List<OnboardingPage>) 
             enter = slideInVertically(initialOffsetY = { 100 }),
             exit = slideOutVertically(targetOffsetY = { 100 })
         ) {
-            OnboardingOptions()
+            OnboardingOptions(skipInternal)
+
         }
 
         AnimatedVisibility(
@@ -122,9 +127,7 @@ fun OnboardingScreen(navController: NavController, items: List<OnboardingPage>) 
         ) {
             Button(
                 modifier = Modifier.wrapContentWidth(),
-                onClick = {
-                    // navController.navigate(Navigation.Login.title)
-                },
+                onClick = skipInternal,
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)
             ) {
@@ -138,25 +141,37 @@ fun OnboardingScreen(navController: NavController, items: List<OnboardingPage>) 
 }
 
 @Composable
-fun OnboardingOptions() {
+fun OnboardingOptions(skip: () -> Unit) {
     ConstraintLayout(Modifier.fillMaxWidth()) {
-        val (skip, next) = createRefs()
-        Text(
-            text = stringResource(R.string.label_skip),
-            style = MaterialTheme.typography.button.merge(TextStyle(fontWeight = FontWeight.Medium)),
-            color = Color.White,
-            modifier = Modifier.constrainAs(skip) {
-                start.linkTo(parent.start)
-            }
-        )
-        Text(
-            text = stringResource(R.string.label_next),
-            style = MaterialTheme.typography.button,
-            color = Color.White,
-            modifier = Modifier.constrainAs(next) {
-                end.linkTo(parent.end)
-            }
-        )
+        val (textSkip, textNext) = createRefs()
+        TextButton(
+            onClick = skip,
+            modifier = Modifier
+                .constrainAs(textSkip) {
+                    start.linkTo(parent.start)
+                }
+        ) {
+            Text(
+                text = stringResource(R.string.label_skip),
+                style = MaterialTheme.typography.button.merge(TextStyle(fontWeight = FontWeight.Medium)),
+                color = Color.White
+            )
+        }
+
+        TextButton(
+            onClick = {},
+            modifier = Modifier
+                .clickable(onClick = { })
+                .constrainAs(textNext) {
+                    end.linkTo(parent.end)
+                }
+        ) {
+            Text(
+                text = stringResource(R.string.label_next),
+                style = MaterialTheme.typography.button,
+                color = Color.White
+            )
+        }
     }
 }
 
