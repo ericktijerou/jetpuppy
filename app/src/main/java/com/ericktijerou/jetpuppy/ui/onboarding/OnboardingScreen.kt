@@ -111,7 +111,6 @@ fun OnboardingScreen(items: List<OnboardingPage>, viewModel: OnboardingViewModel
             exit = slideOutVertically(targetOffsetY = { 100 })
         ) {
             OnboardingOptions(skipInternal)
-
         }
 
         AnimatedVisibility(
