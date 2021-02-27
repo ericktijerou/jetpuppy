@@ -21,7 +21,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.popUpTo
 import androidx.navigation.compose.rememberNavController
-import com.ericktijerou.jetpuppy.ui.home.HomeScreen
 import com.ericktijerou.jetpuppy.ui.onboarding.OnboardingPage
 import com.ericktijerou.jetpuppy.ui.onboarding.OnboardingScreen
 import com.ericktijerou.jetpuppy.ui.theme.JetpuppyTheme
@@ -34,7 +33,7 @@ fun JetpuppyApp() {
     ProvideWindowInsets {
         JetpuppyTheme {
             val navController = rememberNavController()
-            NavHost(navController, startDestination = Screen.Home.route) {
+            NavHost(navController, startDestination = Screen.Main.route) {
                 composable(Screen.Onboarding.route) {
                     OnboardingScreen(
                         items = listOf(
@@ -44,15 +43,15 @@ fun JetpuppyApp() {
                         ),
                         viewModel = it.hiltNavGraphViewModel()
                     ) {
-                        navController.navigate(route = Screen.Home.route) {
+                        navController.navigate(route = Screen.Main.route) {
                             popUpTo(Screen.Onboarding.route) { inclusive = true }
                         }
                     }
                 }
-                composable(Screen.Home.route) {
-                    HomeScreen(viewModel = it.hiltNavGraphViewModel()) {
+                composable(Screen.Main.route) {
+                    MainScreen(viewModel = it.hiltNavGraphViewModel()) {
                         navController.navigate(route = Screen.Onboarding.route) {
-                            popUpTo(Screen.Home.route) { inclusive = true }
+                            popUpTo(Screen.Main.route) { inclusive = true }
                         }
                     }
                 }

@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ericktijerou.jetpuppy.ui.util
+package com.ericktijerou.jetpuppy.ui.profile
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.HiltViewModelFactory
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavBackStackEntry
-
-sealed class Screen(val route: String) {
-    object Onboarding : Screen("onboarding")
-    object Main : Screen("main")
-}
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.ericktijerou.jetpuppy.R
 
 @Composable
-inline fun <reified VM : ViewModel> NavBackStackEntry.hiltNavGraphViewModel(): VM {
-    val viewModelFactory = HiltViewModelFactory(LocalContext.current, this)
-    return ViewModelProvider(this, viewModelFactory).get(VM::class.java)
+fun ProfileScreen(modifier: Modifier = Modifier) {
+    Text(
+        text = stringResource(R.string.label_profile),
+        modifier = modifier
+            .fillMaxSize()
+            .wrapContentSize()
+    )
 }

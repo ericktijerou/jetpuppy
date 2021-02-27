@@ -5,6 +5,9 @@
     <string name="label_search">Search</string>
     <string name="label_menu">Menu</string>
     <string name="label_profile">Profile</string>
+    <string name="label_home">Home</string>
+    <string name="label_chat">Chat</string>
+    <string name="label_favorite">Favorite</string>
     <string name="hint_search">Find your friend…</string>
     <string name="caption_shelter">Make a difference and contribute today!</string>
     <string name="label_shelter">Shelter pets need your help</string>
@@ -19,6 +22,6 @@
     <string name="caption_recommended">The best breed are the ones in need!</string>
     <string name="label_senior">Senior Pets</string>
     <string name="label_near_you">Near you</string>
-    <string name="caption_near_you">Adopt a puppy today</string>
+    <string name="caption_near_you">Adopt a puppy today!</string>
     <string name="caption_senior">Don\'t buy, adopt!</string>
 </resources>
