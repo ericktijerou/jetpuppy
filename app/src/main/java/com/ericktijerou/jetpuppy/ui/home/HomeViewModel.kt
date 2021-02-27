@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ericktijerou.jetpuppy.ui.feed
+package com.ericktijerou.jetpuppy.ui.home
 
 import androidx.lifecycle.ViewModel
 import com.ericktijerou.jetpuppy.ui.util.PreferenceManager
@@ -21,7 +21,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class FeedViewModel @Inject
+class HomeViewModel @Inject
 constructor(private val preferenceManager: PreferenceManager) :
     ViewModel() {
     fun hasOnboarding() = preferenceManager.hasOnboarding

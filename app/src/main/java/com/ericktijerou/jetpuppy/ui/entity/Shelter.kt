@@ -13,23 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ericktijerou.jetpuppy.ui.theme
+package com.ericktijerou.jetpuppy.ui.entity
 
-import androidx.compose.ui.graphics.Color
-
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
-
-// Custom
-val BlackLight = Color(0xFF161617)
-val TealOnboarding = Color(0xFF27AA9E)
-val PurpleOnboarding = Color(0xFF5054C1)
-val OrangeOnboarding = Color(0xFFEB7F64)
-
-val GraySearchBoxLight = Color(0xFFF2F3F5)
-val GraySearchBoxDark = Color(0xFF1F1F1F)
-
-val BackgroundLight = Color(0xFFF2F3F5)
-val BackgroundDark = Color(0xFF0A0A0A)
+data class Shelter(
+    val name: String,
+    val avatar: String
+)

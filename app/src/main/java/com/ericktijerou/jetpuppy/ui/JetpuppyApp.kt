@@ -21,7 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.popUpTo
 import androidx.navigation.compose.rememberNavController
-import com.ericktijerou.jetpuppy.ui.feed.FeedScreen
+import com.ericktijerou.jetpuppy.ui.home.HomeScreen
 import com.ericktijerou.jetpuppy.ui.onboarding.OnboardingPage
 import com.ericktijerou.jetpuppy.ui.onboarding.OnboardingScreen
 import com.ericktijerou.jetpuppy.ui.theme.JetpuppyTheme
@@ -34,7 +34,7 @@ fun JetpuppyApp() {
     ProvideWindowInsets {
         JetpuppyTheme {
             val navController = rememberNavController()
-            NavHost(navController, startDestination = Screen.Feed.route) {
+            NavHost(navController, startDestination = Screen.Home.route) {
                 composable(Screen.Onboarding.route) {
                     OnboardingScreen(
                         items = listOf(
@@ -44,15 +44,15 @@ fun JetpuppyApp() {
                         ),
                         viewModel = it.hiltNavGraphViewModel()
                     ) {
-                        navController.navigate(route = Screen.Feed.route) {
+                        navController.navigate(route = Screen.Home.route) {
                             popUpTo(Screen.Onboarding.route) { inclusive = true }
                         }
                     }
                 }
-                composable(Screen.Feed.route) {
-                    FeedScreen(viewModel = it.hiltNavGraphViewModel()) {
+                composable(Screen.Home.route) {
+                    HomeScreen(viewModel = it.hiltNavGraphViewModel()) {
                         navController.navigate(route = Screen.Onboarding.route) {
-                            popUpTo(Screen.Feed.route) { inclusive = true }
+                            popUpTo(Screen.Home.route) { inclusive = true }
                         }
                     }
                 }

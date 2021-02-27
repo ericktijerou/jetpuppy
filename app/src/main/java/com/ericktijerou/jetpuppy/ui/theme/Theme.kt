@@ -20,7 +20,14 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import com.ericktijerou.jetpuppy.ui.util.LocalSysUiController
 
@@ -28,7 +35,7 @@ private val DarkColorPalette = darkColors(
     primary = BlackLight,
     primaryVariant = BlackLight,
     secondary = Teal200,
-    background = Color.Black,
+    background = BackgroundDark,
     surface = Color.Black,
     onPrimary = Color.White,
     onSecondary = Color.White,
@@ -40,7 +47,7 @@ private val LightColorPalette = lightColors(
     primary = Color.White,
     primaryVariant = Color.White,
     secondary = Teal200,
-    background = Color.White,
+    background = BackgroundLight,
     surface = Color.White,
     onPrimary = Color.Black,
     onSecondary = Color.Black,
@@ -48,19 +55,67 @@ private val LightColorPalette = lightColors(
     onSurface = Color.Black
 )
 
+private val LightPuppyColorPalette = JetpuppyColors(
+    searchBoxColor = GraySearchBoxLight,
+    isDark = false
+)
+
+private val DarkPuppyColorPalette = JetpuppyColors(
+    searchBoxColor = GraySearchBoxDark,
+    isDark = true
+)
+
 @Composable
-fun JetpuppyTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
-    val colors = if (darkTheme) DarkColorPalette else LightColorPalette
+fun JetpuppyTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+    val (colors, customColors) = if (darkTheme) DarkColorPalette to DarkPuppyColorPalette else LightColorPalette to LightPuppyColorPalette
     val sysUiController = LocalSysUiController.current
     SideEffect {
         sysUiController.setSystemBarsColor(
             color = colors.primary
         )
     }
-    MaterialTheme(
-        colors = colors,
-        typography = typography,
-        shapes = Shapes,
-        content = content
-    )
+    ProvideJetpuppyColors(customColors) {
+        MaterialTheme(
+            colors = colors,
+            typography = typography,
+            shapes = Shapes,
+            content = content
+        )
+    }
+}
+
+object JetpuppyTheme {
+    val colors: JetpuppyColors
+        @Composable
+        get() = LocalJetpuppyColors.current
+}
+
+@Composable
+fun ProvideJetpuppyColors(
+    colors: JetpuppyColors,
+    content: @Composable () -> Unit
+) {
+    val colorPalette = remember { colors }
+    colorPalette.update(colors)
+    CompositionLocalProvider(LocalJetpuppyColors provides colorPalette, content = content)
+}
+
+@Stable
+class JetpuppyColors(
+    searchBoxColor: Color,
+    isDark: Boolean
+) {
+    var searchBoxColor by mutableStateOf(searchBoxColor)
+        private set
+    var isDark by mutableStateOf(isDark)
+        private set
+
+    fun update(other: JetpuppyColors) {
+        searchBoxColor = other.searchBoxColor
+        isDark = other.isDark
+    }
+}
+
+private val LocalJetpuppyColors = staticCompositionLocalOf<JetpuppyColors> {
+    error("No JetsnackColorPalette provided")
 }

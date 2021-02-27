@@ -13,16 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ericktijerou.jetpuppy.ui.feed
+package com.ericktijerou.jetpuppy.ui.entity
 
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-
-@Composable
-fun FeedScreen(viewModel: FeedViewModel, onBoarding: () -> Unit = {}) {
-    if (viewModel.hasOnboarding()) {
-        onBoarding()
-        return
-    }
-    Text("FeedScreen")
-}
+data class Dog(
+    val name: String,
+    val age: String,
+    val gender: String,
+    val imageUrl: String,
+    val bread: String
+)
