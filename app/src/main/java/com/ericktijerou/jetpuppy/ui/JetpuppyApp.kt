@@ -21,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.popUpTo
 import androidx.navigation.compose.rememberNavController
+import com.ericktijerou.jetpuppy.ui.main.MainScreen
 import com.ericktijerou.jetpuppy.ui.onboarding.OnboardingPage
 import com.ericktijerou.jetpuppy.ui.onboarding.OnboardingScreen
 import com.ericktijerou.jetpuppy.ui.theme.JetpuppyTheme
@@ -49,9 +50,9 @@ fun JetpuppyApp() {
                     }
                 }
                 composable(Screen.Main.route) {
-                    MainScreen(viewModel = it.hiltNavGraphViewModel()) {
-                        navController.navigate(route = Screen.Onboarding.route) {
-                            popUpTo(Screen.Main.route) { inclusive = true }
+                    MainScreen(viewModel = it.hiltNavGraphViewModel()) { route, clearBackStack ->
+                        navController.navigate(route = route) {
+                            if (clearBackStack) popUpTo(Screen.Main.route) { inclusive = true }
                         }
                     }
                 }

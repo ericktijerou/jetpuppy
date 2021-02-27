@@ -13,24 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ericktijerou.jetpuppy.ui.home
+package com.ericktijerou.jetpuppy.ui.main
 
 import androidx.lifecycle.ViewModel
-import com.ericktijerou.jetpuppy.ui.entity.Dog
-import com.ericktijerou.jetpuppy.ui.entity.HomeSectionType
-import com.ericktijerou.jetpuppy.ui.entity.Shelter
-import com.ericktijerou.jetpuppy.ui.util.PuppyDataManager
+import com.ericktijerou.jetpuppy.ui.util.PreferenceManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject
-constructor(private val dataManager: PuppyDataManager) : ViewModel() {
-    fun getPuppyListBySection(@HomeSectionType sectionType: String): List<Dog> {
-        return dataManager.puppies.filter { it.section == sectionType }
-    }
-
-    fun getShelterList(): List<Shelter> {
-        return dataManager.shelters
-    }
+class MainViewModel @Inject
+constructor(private val preferenceManager: PreferenceManager) :
+    ViewModel() {
+    fun hasOnboarding() = preferenceManager.hasOnboarding
 }

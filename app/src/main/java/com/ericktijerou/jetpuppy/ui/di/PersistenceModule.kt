@@ -17,6 +17,7 @@ package com.ericktijerou.jetpuppy.ui.di
 
 import android.content.Context
 import com.ericktijerou.jetpuppy.ui.util.PreferenceManager
+import com.ericktijerou.jetpuppy.ui.util.PuppyDataManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,4 +31,8 @@ object PersistenceModule {
     @Singleton
     @Provides
     fun providePreferenceManager(@ApplicationContext context: Context) = PreferenceManager(context)
+
+    @Singleton
+    @Provides
+    fun providePuppyManager() = PuppyDataManager
 }

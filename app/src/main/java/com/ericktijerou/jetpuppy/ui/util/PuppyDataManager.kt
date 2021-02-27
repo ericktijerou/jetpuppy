@@ -16,19 +16,47 @@
 package com.ericktijerou.jetpuppy.ui.util
 
 import com.ericktijerou.jetpuppy.ui.entity.Dog
+import com.ericktijerou.jetpuppy.ui.entity.HomeSectionType
 import com.ericktijerou.jetpuppy.ui.entity.Shelter
 import kotlin.random.Random
 
-object JetpuppyHelper {
-    fun generatePuppyDataSet(): List<Dog> {
+object PuppyDataManager {
+    val puppies by lazy {
+        val homeSections =
+            listOf(HomeSectionType.RECOMMENDED, HomeSectionType.NEAR_YOU, HomeSectionType.SENIOR)
+        generatePuppyDataSet(homeSections)
+    }
+    val shelters by lazy { generateShelterDataSet() }
+
+    private fun generatePuppyDataSet(sections: List<String>): List<Dog> {
+        val list = mutableListOf<Dog>()
+        sections.forEach { section ->
+            list.addAll(generateBySection(section))
+        }
+        return list
+    }
+
+    private fun generateBySection(@HomeSectionType section: String): List<Dog> {
         val list = mutableListOf<Dog>()
         for (i in 1..10) {
+            val id = when (section) {
+                HomeSectionType.RECOMMENDED -> i
+                HomeSectionType.NEAR_YOU -> i + 10
+                else -> i + 20
+            }
+            val avatar = if (section == HomeSectionType.SENIOR) {
+                seniorImageList[Random.nextInt(seniorImageList.size)]
+            } else {
+                puppyImageList[Random.nextInt(puppyImageList.size)]
+            }
             list.add(
                 Dog(
+                    id = id.toString(),
+                    section = section,
                     name = "Friend $i",
                     age = "",
                     gender = "",
-                    imageUrl = puppyList[Random.nextInt(puppyList.size)],
+                    imageUrl = avatar,
                     bread = "Bread $i"
                 )
             )
@@ -36,36 +64,20 @@ object JetpuppyHelper {
         return list
     }
 
-    fun generateShelterDataSet(): List<Shelter> {
+    private fun generateShelterDataSet(): List<Shelter> {
         val list = mutableListOf<Shelter>()
         for (i in 1..10) {
             list.add(
                 Shelter(
                     name = "Shelter $i",
-                    avatar = shelterList[Random.nextInt(shelterList.size)]
+                    avatar = shelterImageList[Random.nextInt(shelterImageList.size)]
                 )
             )
         }
         return list
     }
 
-    fun generateSeniorDataSet(): List<Dog> {
-        val list = mutableListOf<Dog>()
-        for (i in 1..10) {
-            list.add(
-                Dog(
-                    name = "Friend $i",
-                    age = "",
-                    gender = "",
-                    imageUrl = seniorList[Random.nextInt(seniorList.size)],
-                    bread = "Bread $i"
-                )
-            )
-        }
-        return list
-    }
-
-    private val puppyList = listOf(
+    private val puppyImageList = listOf(
         "https://c.stocksy.com/a/B2l400/z9/1134115.jpg",
         "https://c.stocksy.com/a/7dt000/z9/213845.jpg",
         "https://c.stocksy.com/a/DOg400/z9/1116261.jpg",
@@ -84,7 +96,7 @@ object JetpuppyHelper {
         "https://images.pexels.com/photos/1317111/pexels-photo-1317111.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
     )
 
-    private val seniorList = listOf(
+    private val seniorImageList = listOf(
         "https://images.pexels.com/photos/5867321/pexels-photo-5867321.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
         "https://images.pexels.com/photos/220938/pexels-photo-220938.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
         "https://images.pexels.com/photos/1629777/pexels-photo-1629777.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
@@ -99,7 +111,7 @@ object JetpuppyHelper {
         "https://images.pexels.com/photos/220938/pexels-photo-220938.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
     )
 
-    private val shelterList = listOf(
+    private val shelterImageList = listOf(
         "https://image.freepik.com/free-vector/cute-corgi-dog-playing-box-cartoon_138676-2307.jpg",
         "https://image.freepik.com/free-vector/cute-corgi-astronaut-flying-cartoon-vector-illustration-animal-science-concept-isolated-vector-flat-cartoon-style_138676-1931.jpg",
         "https://img.freepik.com/free-vector/cute-corgi-astronaut-with-rocket-cartoon-icon-illustration-animal-space-icon-concept-isolated-flat-cartoon-style_138676-1351.jpg?size=338&ext=jpg",

@@ -25,6 +25,7 @@ import androidx.navigation.NavBackStackEntry
 sealed class Screen(val route: String) {
     object Onboarding : Screen("onboarding")
     object Main : Screen("main")
+    object Dog : Screen("dog/{type}/{dogId}")
 }
 
 @Composable

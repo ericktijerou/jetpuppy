@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ericktijerou.jetpuppy.ui
+package com.ericktijerou.jetpuppy.ui.main
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -72,25 +72,32 @@ import com.ericktijerou.jetpuppy.R
 import com.ericktijerou.jetpuppy.ui.chat.ChatScreen
 import com.ericktijerou.jetpuppy.ui.favorite.FavoriteScreen
 import com.ericktijerou.jetpuppy.ui.home.HomeScreen
-import com.ericktijerou.jetpuppy.ui.home.HomeViewModel
 import com.ericktijerou.jetpuppy.ui.profile.ProfileScreen
 import com.ericktijerou.jetpuppy.ui.theme.JetpuppyTheme
+import com.ericktijerou.jetpuppy.ui.util.Screen
+import com.ericktijerou.jetpuppy.ui.util.hiltNavGraphViewModel
 
 @Composable
-fun MainScreen(viewModel: HomeViewModel, onBoarding: () -> Unit = {}) {
+fun MainScreen(viewModel: MainViewModel, navigateTo: (String, Boolean) -> Unit) {
     if (viewModel.hasOnboarding()) {
-        onBoarding()
+        navigateTo(Screen.Onboarding.route, true)
         return
     }
     val navController = rememberNavController()
-    val sections = listOf(MainSection.Home, MainSection.Favorite, MainSection.Chat, MainSection.Profile)
+    val sections =
+        listOf(MainSection.Home, MainSection.Favorite, MainSection.Chat, MainSection.Profile)
     Scaffold(
         topBar = { MainAppBar() },
         bottomBar = { MainBottomNavigation(navController = navController, sections = sections) }
     ) { innerPadding ->
         val modifier = Modifier.padding(innerPadding)
         NavHost(navController = navController, startDestination = MainSection.Home.route) {
-            composable(MainSection.Home.route) { HomeScreen(modifier) }
+            composable(MainSection.Home.route) {
+                HomeScreen(
+                    it.hiltNavGraphViewModel(),
+                    modifier
+                ) { route -> navigateTo(route, false) }
+            }
             composable(MainSection.Favorite.route) { FavoriteScreen(modifier) }
             composable(MainSection.Chat.route) { ChatScreen(modifier) }
             composable(MainSection.Profile.route) { ProfileScreen(modifier) }
@@ -227,6 +234,8 @@ private fun UserInputText(
 sealed class MainSection(val route: String, @StringRes val label: Int, val icon: ImageVector) {
     object Home : MainSection("home", R.string.label_home, Icons.Outlined.Home)
     object Profile : MainSection("profile", R.string.label_profile, Icons.Outlined.AccountCircle)
-    object Favorite : MainSection("favorite", R.string.label_favorite, Icons.Outlined.FavoriteBorder)
+    object Favorite :
+        MainSection("favorite", R.string.label_favorite, Icons.Outlined.FavoriteBorder)
+
     object Chat : MainSection("chat", R.string.label_chat, Icons.Outlined.Chat)
 }

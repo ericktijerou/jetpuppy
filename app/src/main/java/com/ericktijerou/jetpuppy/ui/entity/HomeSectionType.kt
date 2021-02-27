@@ -15,12 +15,19 @@
  */
 package com.ericktijerou.jetpuppy.ui.entity
 
-data class Dog(
-    val id: String,
-    @HomeSectionType val section: String,
-    val name: String,
-    val age: String,
-    val gender: String,
-    val imageUrl: String,
-    val bread: String
+import androidx.annotation.StringDef
+
+@kotlin.annotation.Retention(AnnotationRetention.SOURCE)
+@StringDef(
+    HomeSectionType.NEAR_YOU,
+    HomeSectionType.RECOMMENDED,
+    HomeSectionType.SENIOR
 )
+
+annotation class HomeSectionType {
+    companion object {
+        const val NEAR_YOU = "near_you"
+        const val RECOMMENDED = "recommended"
+        const val SENIOR = "senior"
+    }
+}

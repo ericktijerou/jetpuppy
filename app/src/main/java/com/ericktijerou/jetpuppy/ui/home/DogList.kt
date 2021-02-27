@@ -47,7 +47,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ericktijerou.jetpuppy.ui.entity.Dog
-import com.ericktijerou.jetpuppy.ui.util.Screen
 import com.ericktijerou.jetpuppy.ui.util.verticalGradientScrim
 import dev.chrisbanes.accompanist.coil.CoilImage
 
@@ -57,7 +56,7 @@ fun DogList(
     @StringRes caption: Int,
     dogs: List<Dog>,
     modifier: Modifier,
-    navigateTo: (Screen) -> Unit
+    navigateTo: (String) -> Unit
 ) {
     Card(modifier = modifier, backgroundColor = MaterialTheme.colors.primary) {
         Column(modifier = Modifier.padding(bottom = 16.dp)) {
@@ -83,14 +82,14 @@ fun DogList(
 @Composable
 fun DogRow(
     dogs: List<Dog>,
-    navigateTo: (Screen) -> Unit
+    navigateTo: (String) -> Unit
 ) {
     val lastIndex = dogs.size - 1
     LazyRow(
         contentPadding = PaddingValues(start = 16.dp, end = 16.dp)
     ) {
         itemsIndexed(items = dogs) { index: Int, item: Dog ->
-            DogItem(dog = item, navigateTo = { /*TODO*/ })
+            DogItem(dog = item, navigateTo = navigateTo)
             if (index < lastIndex) Spacer(Modifier.width(16.dp))
         }
     }
@@ -99,7 +98,7 @@ fun DogRow(
 @Composable
 fun DogItem(
     dog: Dog,
-    navigateTo: (Screen) -> Unit,
+    navigateTo: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Surface(shape = RoundedCornerShape(8.dp)) {

@@ -21,43 +21,43 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.ericktijerou.jetpuppy.R
-import com.ericktijerou.jetpuppy.ui.util.JetpuppyHelper
+import com.ericktijerou.jetpuppy.ui.entity.HomeSectionType
 
 @Composable
-fun HomeScreen(modifier: Modifier) {
+fun HomeScreen(viewModel: HomeViewModel, modifier: Modifier, navigateToDog: (String) -> Unit) {
     LazyColumn(modifier = modifier) {
         item {
             DogList(
                 title = R.string.label_recommended,
                 caption = R.string.caption_recommended,
-                dogs = JetpuppyHelper.generatePuppyDataSet(),
+                dogs = viewModel.getPuppyListBySection(HomeSectionType.RECOMMENDED),
                 modifier = Modifier.padding(top = 16.dp),
-                navigateTo = { /*Empty*/ }
+                navigateTo = navigateToDog
             )
         }
         item {
             ShelterList(
                 title = R.string.label_shelter,
                 caption = R.string.caption_shelter,
-                shelters = JetpuppyHelper.generateShelterDataSet()
+                shelters = viewModel.getShelterList()
             )
         }
         item {
             DogList(
                 title = R.string.label_near_you,
                 caption = R.string.caption_near_you,
-                dogs = JetpuppyHelper.generatePuppyDataSet(),
+                dogs = viewModel.getPuppyListBySection(HomeSectionType.NEAR_YOU),
                 modifier = Modifier.padding(top = 16.dp),
-                navigateTo = { /*Empty*/ }
+                navigateTo = navigateToDog
             )
         }
         item {
             DogList(
                 title = R.string.label_senior,
                 caption = R.string.caption_senior,
-                dogs = JetpuppyHelper.generateSeniorDataSet(),
+                dogs = viewModel.getPuppyListBySection(HomeSectionType.SENIOR),
                 modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
-                navigateTo = { /*Empty*/ }
+                navigateTo = navigateToDog
             )
         }
     }
