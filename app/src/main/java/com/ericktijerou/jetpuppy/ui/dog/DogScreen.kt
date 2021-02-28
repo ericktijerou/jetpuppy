@@ -93,7 +93,7 @@ fun InfoContainer(dog: Dog) {
         Modifier
             .fillMaxWidth()
             .background(color = Color.White)
-            .padding(start = 24.dp, top = 16.dp, end = 24.dp, bottom = 36.dp)
+            .padding(start = 24.dp, top = 24.dp, end = 24.dp, bottom = 36.dp)
     ) {
 
         val rowsModifier = Modifier
