@@ -18,7 +18,9 @@ package com.ericktijerou.jetpuppy.ui.dog
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,6 +31,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -36,11 +40,15 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.rememberSwipeableState
+import androidx.compose.material.swipeable
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -51,55 +59,113 @@ import com.ericktijerou.jetpuppy.R
 import com.ericktijerou.jetpuppy.ui.entity.Dog
 import com.ericktijerou.jetpuppy.util.EMPTY
 import com.ericktijerou.jetpuppy.util.SuperellipseCornerShape
+import com.ericktijerou.jetpuppy.util.lerp
 import dev.chrisbanes.accompanist.coil.CoilImage
+import kotlinx.coroutines.launch
 
+private val InfoContainerMaxHeight = 400.dp
+private val InfoContainerMinHeight = 90.dp
+
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun DogScreen(viewModel: DogViewModel, dogId: String, modifier: Modifier = Modifier) {
-    val dog = viewModel.getPuppyById(dogId)
-    ConstraintLayout(Modifier.fillMaxSize()) {
-        val (image, containerInfo) = createRefs()
-        CoilImage(
-            data = dog.imageUrl,
-            contentScale = ContentScale.Crop,
-            contentDescription = EMPTY,
-            modifier = Modifier.constrainAs(image) {
-                linkTo(
-                    start = parent.start,
-                    top = parent.top,
-                    end = parent.end,
-                    bottom = containerInfo.top,
-                    bottomMargin = (-32).dp
+fun DogScreen(viewModel: DogViewModel, dogId: String) {
+    BoxWithConstraints {
+        val sheetState = rememberSwipeableState(SheetState.Open)
+        val infoMaxHeightInPixels = with(LocalDensity.current) { InfoContainerMaxHeight.toPx() }
+        val infoMinHeightInPixels = with(LocalDensity.current) { InfoContainerMinHeight.toPx() }
+        val dragRange = infoMaxHeightInPixels - infoMinHeightInPixels
+        val scope = rememberCoroutineScope()
+        val dog = viewModel.getPuppyById(dogId)
+        ConstraintLayout(
+            Modifier
+                .fillMaxSize()
+                .swipeable(
+                    state = sheetState,
+                    anchors = mapOf(
+                        0f to SheetState.Closed,
+                        -dragRange to SheetState.Open
+                    ),
+                    thresholds = { _, _ -> FractionalThreshold(0.5f) },
+                    orientation = Orientation.Vertical
                 )
-                width = Dimension.fillToConstraints
-                height = Dimension.fillToConstraints
-            }
-        )
-        Surface(
-            shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp,),
-            modifier = Modifier.constrainAs(containerInfo) {
-                linkTo(start = parent.start, end = parent.end)
-                bottom.linkTo(parent.bottom)
-                width = Dimension.fillToConstraints
-            }
         ) {
-            InfoContainer(dog)
+            val openFraction = if (sheetState.offset.value.isNaN()) {
+                0f
+            } else {
+                -sheetState.offset.value / dragRange
+            }.coerceIn(0f, 1f)
+            val (image, containerInfo) = createRefs()
+            val offsetY = lerp(
+                infoMaxHeightInPixels,
+                0f,
+                openFraction
+            )
+
+            CoilImage(
+                data = dog.imageUrl,
+                contentScale = ContentScale.Crop,
+                contentDescription = EMPTY,
+                modifier = Modifier
+                    .clickable(
+                        enabled = sheetState.currentValue == SheetState.Open,
+                        onClick = {
+                            scope.launch {
+                                sheetState.animateTo(SheetState.Closed)
+                            }
+                        })
+                    .constrainAs(image) {
+                        linkTo(
+                            start = parent.start,
+                            top = parent.top,
+                            end = parent.end,
+                            bottom = containerInfo.top,
+                            bottomMargin = (-32).dp
+                        )
+                        width = Dimension.fillToConstraints
+                        height = Dimension.fillToConstraints
+                    }
+            )
+            Surface(
+                shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+                modifier = Modifier
+                    .constrainAs(containerInfo) {
+                        linkTo(start = parent.start, end = parent.end)
+                        bottom.linkTo(parent.bottom)
+                        width = Dimension.fillToConstraints
+                        val actualHeight = InfoContainerMaxHeight - offsetY.dp
+                        height = Dimension.value(actualHeight.coerceAtLeast(InfoContainerMinHeight))
+                    }
+            ) {
+                InfoContainer(
+                    dog,
+                    Modifier
+                        .height(InfoContainerMinHeight)
+                        .clickable(
+                            enabled = sheetState.currentValue == SheetState.Closed,
+                            onClick = {
+                                scope.launch {
+                                    sheetState.animateTo(SheetState.Open)
+                                }
+                            })
+                )
+            }
         }
     }
+
 }
 
 @Composable
-fun InfoContainer(dog: Dog) {
+fun InfoContainer(dog: Dog, modifier: Modifier) {
     Column(
         Modifier
             .fillMaxWidth()
             .background(color = Color.White)
-            .padding(start = 24.dp, top = 24.dp, end = 24.dp, bottom = 36.dp)
     ) {
 
         val rowsModifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 20.dp)
-        TitleRow(title = "${dog.name}, ${dog.age}", breed = dog.breed, modifier = rowsModifier)
+            .padding(start = 24.dp, end = 24.dp, bottom = 20.dp)
+        TitleRow(title = "${dog.name}, ${dog.age}", breed = dog.breed, modifier)
         Text(
             text = stringResource(id = dog.summary),
             style = MaterialTheme.typography.body2,
@@ -121,7 +187,7 @@ fun InfoContainer(dog: Dog) {
 fun AdoptButton() {
     Card(
         modifier = Modifier
-            .padding(top = 12.dp)
+            .padding(start = 24.dp, end = 24.dp, top = 16.dp)
             .height(48.dp)
             .fillMaxSize(),
         shape = SuperellipseCornerShape(12.dp),
@@ -143,10 +209,11 @@ fun AdoptButton() {
 }
 
 @Composable
-fun TitleRow(title: String, breed: String, modifier: Modifier) {
+fun TitleRow(title: String, breed: String, modifier: Modifier = Modifier) {
     Row(modifier = modifier) {
         Column(
             modifier = Modifier
+                .padding(start = 24.dp)
                 .align(Alignment.CenterVertically)
                 .weight(1f)
         ) {
@@ -162,7 +229,10 @@ fun TitleRow(title: String, breed: String, modifier: Modifier) {
             )
         }
 
-        IconButton(onClick = { }) {
+        IconButton(onClick = { },
+            Modifier
+                .padding(end = 24.dp)
+                .align(Alignment.CenterVertically)) {
             Icon(
                 imageVector = Icons.Filled.FavoriteBorder,
                 contentDescription = EMPTY,
@@ -187,3 +257,5 @@ fun InfoItemRow(@StringRes label: Int, value: String, modifier: Modifier) {
         )
     }
 }
+
+enum class SheetState { Open, Closed }
