@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -39,7 +40,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material.swipeable
 import androidx.compose.runtime.Composable
@@ -60,6 +63,7 @@ import com.ericktijerou.jetpuppy.ui.entity.Dog
 import com.ericktijerou.jetpuppy.util.EMPTY
 import com.ericktijerou.jetpuppy.util.SuperellipseCornerShape
 import com.ericktijerou.jetpuppy.util.lerp
+import com.ericktijerou.jetpuppy.util.verticalGradientScrim
 import dev.chrisbanes.accompanist.coil.CoilImage
 import kotlinx.coroutines.launch
 
@@ -68,7 +72,7 @@ private val InfoContainerMinHeight = 90.dp
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun DogScreen(viewModel: DogViewModel, dogId: String) {
+fun DogScreen(viewModel: DogViewModel, dogId: String, onBackPressed: () -> Unit) {
     BoxWithConstraints {
         val sheetState = rememberSwipeableState(SheetState.Open)
         val infoMaxHeightInPixels = with(LocalDensity.current) { InfoContainerMaxHeight.toPx() }
@@ -94,7 +98,7 @@ fun DogScreen(viewModel: DogViewModel, dogId: String) {
             } else {
                 -sheetState.offset.value / dragRange
             }.coerceIn(0f, 1f)
-            val (image, containerInfo) = createRefs()
+            val (image, containerInfo, back, share) = createRefs()
             val offsetY = lerp(
                 infoMaxHeightInPixels,
                 0f,
@@ -125,6 +129,42 @@ fun DogScreen(viewModel: DogViewModel, dogId: String) {
                         height = Dimension.fillToConstraints
                     }
             )
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(64.dp)
+                    .verticalGradientScrim(
+                        color = Color.Black.copy(alpha = 0.3f),
+                        startYPercentage = 1f,
+                        endYPercentage = 0f
+                    )
+            )
+
+            IconButton(onClick = onBackPressed, Modifier.constrainAs(back) {
+                start.linkTo(parent.start, margin = 8.dp)
+                top.linkTo(parent.top, margin = 8.dp)
+            }) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = EMPTY,
+                    tint = Color.White,
+                    modifier = Modifier.size(28.dp)
+                )
+            }
+
+            IconButton(onClick = { }, Modifier.constrainAs(share) {
+                end.linkTo(parent.end, margin = 8.dp)
+                top.linkTo(parent.top, margin = 8.dp)
+            }) {
+                Icon(
+                    imageVector = Icons.Filled.Share,
+                    contentDescription = EMPTY,
+                    tint = Color.White,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+
             Surface(
                 shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
                 modifier = Modifier
@@ -151,7 +191,6 @@ fun DogScreen(viewModel: DogViewModel, dogId: String) {
             }
         }
     }
-
 }
 
 @Composable
@@ -192,7 +231,6 @@ fun AdoptButton() {
             .fillMaxSize(),
         shape = SuperellipseCornerShape(12.dp),
         backgroundColor = MaterialTheme.colors.secondary,
-        elevation = 12.dp
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -229,10 +267,12 @@ fun TitleRow(title: String, breed: String, modifier: Modifier = Modifier) {
             )
         }
 
-        IconButton(onClick = { },
+        IconButton(
+            onClick = { },
             Modifier
                 .padding(end = 24.dp)
-                .align(Alignment.CenterVertically)) {
+                .align(Alignment.CenterVertically)
+        ) {
             Icon(
                 imageVector = Icons.Filled.FavoriteBorder,
                 contentDescription = EMPTY,

@@ -61,7 +61,8 @@ fun JetpuppyApp() {
                     val dogId = it.arguments?.getString(Screen.Dog.ARG_DOG_ID).orEmpty()
                     DogScreen(
                         viewModel = it.hiltNavGraphViewModel(),
-                        dogId = dogId
+                        dogId = dogId,
+                        onBackPressed = { navController.navigateUp() }
                     )
                 }
             }
