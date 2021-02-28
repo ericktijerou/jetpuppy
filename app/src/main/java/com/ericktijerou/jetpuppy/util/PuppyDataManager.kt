@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ericktijerou.jetpuppy.ui.util
+package com.ericktijerou.jetpuppy.util
 
+import com.ericktijerou.jetpuppy.R
 import com.ericktijerou.jetpuppy.ui.entity.Dog
 import com.ericktijerou.jetpuppy.ui.entity.HomeSectionType
 import com.ericktijerou.jetpuppy.ui.entity.Shelter
@@ -53,11 +54,14 @@ object PuppyDataManager {
                 Dog(
                     id = id.toString(),
                     section = section,
-                    name = "Friend $i",
-                    age = "",
-                    gender = "",
+                    name = nameList[Random.nextInt(nameList.size)],
+                    age = if (section == HomeSectionType.SENIOR) "${(0..5).random()} years" else "${(0..11).random()} months",
+                    gender = genreList[Random.nextInt(genreList.size)],
                     imageUrl = avatar,
-                    bread = "Bread $i"
+                    breed = "Breed$i",
+                    weight = "${(0..6).random()}kg or less",
+                    summary = summaryList[Random.nextInt(summaryList.size)],
+                    color = "Color$i"
                 )
             )
         }
@@ -124,5 +128,41 @@ object PuppyDataManager {
         "https://img.freepik.com/free-vector/cute-pug-with-cup-coffee-cartoon-illustration-animal-drink-concept-isolated-flat-cartoon_138676-2286.jpg?size=338&ext=jpg",
         "https://img.freepik.com/free-vector/flat-pug-with-butterfly_23-2147697447.jpg?size=338&ext=jpg",
         "https://image.freepik.com/free-vector/hipster-monocle-bow-tie-dog_23-2147493779.jpg?2"
+    )
+
+    private val nameList = listOf(
+        "Nala",
+        "Leia",
+        "Toby",
+        "Manchis",
+        "Princess",
+        "Honey",
+        "Bear",
+        "Cassie",
+        "Lady",
+        "Sam",
+        "Charlie",
+        "Sparky",
+        "Tasha",
+        "Coco",
+        "Smokey",
+        "Jack",
+        "Jessie",
+        "Molly",
+        "Daisy",
+        "Tyson",
+        "Bear",
+        "Penny",
+        "Tess",
+        "Bonnie",
+        "Jasper"
+    )
+
+    private val genreList = listOf("Male", "Female")
+
+    private val summaryList = listOf(
+        R.string.summary1,
+        R.string.summary2,
+        R.string.summary3,
     )
 }

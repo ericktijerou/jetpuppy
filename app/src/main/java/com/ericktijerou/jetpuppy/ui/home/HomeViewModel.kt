@@ -19,7 +19,7 @@ import androidx.lifecycle.ViewModel
 import com.ericktijerou.jetpuppy.ui.entity.Dog
 import com.ericktijerou.jetpuppy.ui.entity.HomeSectionType
 import com.ericktijerou.jetpuppy.ui.entity.Shelter
-import com.ericktijerou.jetpuppy.ui.util.PuppyDataManager
+import com.ericktijerou.jetpuppy.util.PuppyDataManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

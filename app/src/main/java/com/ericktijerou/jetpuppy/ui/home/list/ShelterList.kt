@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ericktijerou.jetpuppy.ui.home
+package com.ericktijerou.jetpuppy.ui.home.list
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
@@ -87,13 +87,13 @@ fun ShelterItem(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.width(120.dp)
+        modifier = modifier.width(130.dp)
     ) {
         CoilImage(
             data = shelter.avatar,
             contentDescription = null,
             modifier = Modifier
-                .size(120.dp)
+                .size(130.dp)
                 .clip(CircleShape),
             contentScale = ContentScale.Crop,
         )

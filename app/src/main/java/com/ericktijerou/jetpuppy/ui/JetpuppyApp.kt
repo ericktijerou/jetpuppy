@@ -21,12 +21,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.popUpTo
 import androidx.navigation.compose.rememberNavController
+import com.ericktijerou.jetpuppy.ui.dog.DogScreen
 import com.ericktijerou.jetpuppy.ui.main.MainScreen
 import com.ericktijerou.jetpuppy.ui.onboarding.OnboardingPage
 import com.ericktijerou.jetpuppy.ui.onboarding.OnboardingScreen
 import com.ericktijerou.jetpuppy.ui.theme.JetpuppyTheme
-import com.ericktijerou.jetpuppy.ui.util.Screen
-import com.ericktijerou.jetpuppy.ui.util.hiltNavGraphViewModel
+import com.ericktijerou.jetpuppy.util.Screen
+import com.ericktijerou.jetpuppy.util.hiltNavGraphViewModel
 import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
 
 @Composable
@@ -55,6 +56,13 @@ fun JetpuppyApp() {
                             if (clearBackStack) popUpTo(Screen.Main.route) { inclusive = true }
                         }
                     }
+                }
+                composable(Screen.Dog.route) {
+                    val dogId = it.arguments?.getString(Screen.Dog.ARG_DOG_ID).orEmpty()
+                    DogScreen(
+                        viewModel = it.hiltNavGraphViewModel(),
+                        dogId = dogId
+                    )
                 }
             }
         }

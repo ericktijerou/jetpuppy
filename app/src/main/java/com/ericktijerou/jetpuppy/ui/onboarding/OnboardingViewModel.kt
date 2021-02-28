@@ -16,7 +16,7 @@
 package com.ericktijerou.jetpuppy.ui.onboarding
 
 import androidx.lifecycle.ViewModel
-import com.ericktijerou.jetpuppy.ui.util.PreferenceManager
+import com.ericktijerou.jetpuppy.util.PreferenceManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

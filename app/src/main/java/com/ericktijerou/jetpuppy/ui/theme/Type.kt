@@ -50,7 +50,7 @@ val typography = typographyFromDefaults(
     ),
     h5 = TextStyle(
         fontFamily = fonts,
-        fontWeight = FontWeight.Bold
+        fontWeight = FontWeight.W500
     ),
     h6 = TextStyle(
         fontFamily = fonts,

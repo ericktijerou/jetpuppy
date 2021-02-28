@@ -24,8 +24,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 import com.ericktijerou.jetpuppy.ui.JetpuppyApp
 import com.ericktijerou.jetpuppy.ui.theme.JetpuppyTheme
-import com.ericktijerou.jetpuppy.ui.util.LocalSysUiController
-import com.ericktijerou.jetpuppy.ui.util.SystemUiController
+import com.ericktijerou.jetpuppy.util.LocalSysUiController
+import com.ericktijerou.jetpuppy.util.SystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

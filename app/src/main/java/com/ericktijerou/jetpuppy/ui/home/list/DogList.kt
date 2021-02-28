@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ericktijerou.jetpuppy.ui.home
+package com.ericktijerou.jetpuppy.ui.home.list
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
@@ -47,7 +47,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ericktijerou.jetpuppy.ui.entity.Dog
-import com.ericktijerou.jetpuppy.ui.util.verticalGradientScrim
+import com.ericktijerou.jetpuppy.util.Screen
+import com.ericktijerou.jetpuppy.util.verticalGradientScrim
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
@@ -104,8 +105,8 @@ fun DogItem(
     Surface(shape = RoundedCornerShape(8.dp)) {
         Box(
             modifier = modifier
-                .size(120.dp, 180.dp)
-                .clickable(onClick = { })
+                .size(130.dp, 180.dp)
+                .clickable(onClick = { navigateTo(Screen.Dog.route(dog.id)) })
         ) {
             CoilImage(
                 data = dog.imageUrl,
@@ -132,7 +133,7 @@ fun DogItem(
                     color = Color.White
                 )
                 Text(
-                    text = dog.bread,
+                    text = dog.breed,
                     style = MaterialTheme.typography.body2.copy(fontSize = 10.sp),
                     color = Color.White.copy(alpha = 0.7f)
                 )

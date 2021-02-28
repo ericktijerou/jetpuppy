@@ -74,8 +74,8 @@ import com.ericktijerou.jetpuppy.ui.favorite.FavoriteScreen
 import com.ericktijerou.jetpuppy.ui.home.HomeScreen
 import com.ericktijerou.jetpuppy.ui.profile.ProfileScreen
 import com.ericktijerou.jetpuppy.ui.theme.JetpuppyTheme
-import com.ericktijerou.jetpuppy.ui.util.Screen
-import com.ericktijerou.jetpuppy.ui.util.hiltNavGraphViewModel
+import com.ericktijerou.jetpuppy.util.Screen
+import com.ericktijerou.jetpuppy.util.hiltNavGraphViewModel
 
 @Composable
 fun MainScreen(viewModel: MainViewModel, navigateTo: (String, Boolean) -> Unit) {

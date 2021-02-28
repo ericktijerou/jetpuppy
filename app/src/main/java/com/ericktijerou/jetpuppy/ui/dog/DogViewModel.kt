@@ -13,16 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ericktijerou.jetpuppy.ui.main
+package com.ericktijerou.jetpuppy.ui.dog
 
 import androidx.lifecycle.ViewModel
-import com.ericktijerou.jetpuppy.util.PreferenceManager
+import com.ericktijerou.jetpuppy.ui.entity.Dog
+import com.ericktijerou.jetpuppy.ui.entity.orEmpty
+import com.ericktijerou.jetpuppy.util.PuppyDataManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject
-constructor(private val preferenceManager: PreferenceManager) :
-    ViewModel() {
-    fun hasOnboarding() = preferenceManager.hasOnboarding
+class DogViewModel @Inject
+constructor(private val dataManager: PuppyDataManager) : ViewModel() {
+    fun getPuppyById(id: String): Dog {
+        return dataManager.puppies.find { dog -> dog.id == id }.orEmpty()
+    }
 }

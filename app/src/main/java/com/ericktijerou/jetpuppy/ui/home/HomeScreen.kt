@@ -22,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.ericktijerou.jetpuppy.R
 import com.ericktijerou.jetpuppy.ui.entity.HomeSectionType
+import com.ericktijerou.jetpuppy.ui.home.list.DogList
+import com.ericktijerou.jetpuppy.ui.home.list.ShelterList
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel, modifier: Modifier, navigateToDog: (String) -> Unit) {

@@ -15,12 +15,21 @@
  */
 package com.ericktijerou.jetpuppy.ui.entity
 
+import androidx.annotation.StringRes
+import com.ericktijerou.jetpuppy.R
+import com.ericktijerou.jetpuppy.util.EMPTY
+
 data class Dog(
     val id: String,
     @HomeSectionType val section: String,
     val name: String,
     val age: String,
     val gender: String,
+    val weight: String,
+    val color: String,
     val imageUrl: String,
-    val bread: String
+    val breed: String,
+    @StringRes val summary: Int
 )
+
+fun Dog?.orEmpty() = this ?: Dog(EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, R.string.app_name)

@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ericktijerou.jetpuppy.ui.di
+package com.ericktijerou.jetpuppy.di
 
 import android.content.Context
-import com.ericktijerou.jetpuppy.ui.util.PreferenceManager
-import com.ericktijerou.jetpuppy.ui.util.PuppyDataManager
+import com.ericktijerou.jetpuppy.util.PreferenceManager
+import com.ericktijerou.jetpuppy.util.PuppyDataManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

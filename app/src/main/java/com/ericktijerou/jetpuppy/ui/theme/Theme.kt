@@ -29,7 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import com.ericktijerou.jetpuppy.ui.util.LocalSysUiController
+import com.ericktijerou.jetpuppy.util.LocalSysUiController
 
 private val DarkColorPalette = darkColors(
     primary = BlackLight,

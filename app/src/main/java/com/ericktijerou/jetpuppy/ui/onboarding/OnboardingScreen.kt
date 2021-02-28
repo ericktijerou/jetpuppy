@@ -60,8 +60,8 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieAnimationSpec
 import com.airbnb.lottie.compose.rememberLottieAnimationState
 import com.ericktijerou.jetpuppy.R
-import com.ericktijerou.jetpuppy.ui.util.Pager
-import com.ericktijerou.jetpuppy.ui.util.PagerState
+import com.ericktijerou.jetpuppy.util.Pager
+import com.ericktijerou.jetpuppy.util.PagerState
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ericktijerou.jetpuppy.ui.util
+package com.ericktijerou.jetpuppy.util
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.gestures.Orientation

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ericktijerou.jetpuppy.ui.util
+package com.ericktijerou.jetpuppy.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
@@ -25,7 +25,10 @@ import androidx.navigation.NavBackStackEntry
 sealed class Screen(val route: String) {
     object Onboarding : Screen("onboarding")
     object Main : Screen("main")
-    object Dog : Screen("dog/{type}/{dogId}")
+    object Dog : Screen("dog/{dogId}") {
+        const val ARG_DOG_ID: String = "dogId"
+        fun route(dogId: String) = "dog/$dogId"
+    }
 }
 
 @Composable
