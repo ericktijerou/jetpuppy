@@ -18,11 +18,13 @@ package com.ericktijerou.jetpuppy.ui.main
 import androidx.annotation.StringRes
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -38,6 +40,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.AccountCircle
@@ -60,6 +63,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.KEY_ROUTE
 import androidx.navigation.compose.NavHost
@@ -74,6 +78,7 @@ import com.ericktijerou.jetpuppy.ui.favorite.FavoriteScreen
 import com.ericktijerou.jetpuppy.ui.home.HomeScreen
 import com.ericktijerou.jetpuppy.ui.profile.ProfileScreen
 import com.ericktijerou.jetpuppy.ui.theme.JetpuppyTheme
+import com.ericktijerou.jetpuppy.util.EMPTY
 import com.ericktijerou.jetpuppy.util.Screen
 import com.ericktijerou.jetpuppy.util.hiltNavGraphViewModel
 
@@ -185,7 +190,7 @@ private fun UserInputText(
                     .padding(start = 8.dp, end = 8.dp)
                     .align(Alignment.CenterVertically)
             ) {
-                val (icon, textField, text) = createRefs()
+                val (icon, textField, text, close) = createRefs()
                 Icon(
                     imageVector = Icons.Filled.Search,
                     contentDescription = "",
@@ -210,8 +215,10 @@ private fun UserInputText(
                         .fillMaxWidth()
                         .constrainAs(textField) {
                             start.linkTo(icon.end, margin = 8.dp)
+                            end.linkTo(close.start)
                             linkTo(top = parent.top, bottom = parent.bottom)
-                        },
+                            width = Dimension.fillToConstraints
+                        }
                 )
 
                 val disableContentColor =
@@ -224,6 +231,19 @@ private fun UserInputText(
                             start.linkTo(textField.start)
                             linkTo(top = parent.top, bottom = parent.bottom)
                         },
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = EMPTY,
+                        Modifier
+                            .size(20.dp)
+                            .clickable { onTextChanged(TextFieldValue(EMPTY))}
+                            .constrainAs(close) {
+                                end.linkTo(parent.end)
+                                top.linkTo(parent.top)
+                                bottom.linkTo(parent.bottom)
+                            }
                     )
                 }
             }
