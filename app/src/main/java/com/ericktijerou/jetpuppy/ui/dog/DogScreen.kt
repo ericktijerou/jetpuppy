@@ -116,7 +116,8 @@ fun DogScreen(viewModel: DogViewModel, dogId: String, onBackPressed: () -> Unit)
                             scope.launch {
                                 sheetState.animateTo(SheetState.Closed)
                             }
-                        })
+                        }
+                    )
                     .constrainAs(image) {
                         linkTo(
                             start = parent.start,
@@ -141,10 +142,13 @@ fun DogScreen(viewModel: DogViewModel, dogId: String, onBackPressed: () -> Unit)
                     )
             )
 
-            IconButton(onClick = onBackPressed, Modifier.constrainAs(back) {
-                start.linkTo(parent.start, margin = 8.dp)
-                top.linkTo(parent.top, margin = 8.dp)
-            }) {
+            IconButton(
+                onClick = onBackPressed,
+                Modifier.constrainAs(back) {
+                    start.linkTo(parent.start, margin = 8.dp)
+                    top.linkTo(parent.top, margin = 8.dp)
+                }
+            ) {
                 Icon(
                     imageVector = Icons.Filled.ArrowBack,
                     contentDescription = EMPTY,
@@ -153,10 +157,13 @@ fun DogScreen(viewModel: DogViewModel, dogId: String, onBackPressed: () -> Unit)
                 )
             }
 
-            IconButton(onClick = { }, Modifier.constrainAs(share) {
-                end.linkTo(parent.end, margin = 8.dp)
-                top.linkTo(parent.top, margin = 8.dp)
-            }) {
+            IconButton(
+                onClick = { },
+                Modifier.constrainAs(share) {
+                    end.linkTo(parent.end, margin = 8.dp)
+                    top.linkTo(parent.top, margin = 8.dp)
+                }
+            ) {
                 Icon(
                     imageVector = Icons.Filled.Share,
                     contentDescription = EMPTY,
@@ -186,7 +193,8 @@ fun DogScreen(viewModel: DogViewModel, dogId: String, onBackPressed: () -> Unit)
                                 scope.launch {
                                     sheetState.animateTo(SheetState.Open)
                                 }
-                            })
+                            }
+                        )
                 )
             }
         }
