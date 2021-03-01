@@ -13,14 +13,13 @@ The purpose of this project is to try new Android technologies and learn how it 
 
 The codebase focuses on following key things:
 
-- [x] Single Activity Design
-- [x] Clean and Simple UI 🎨
-- [x] Dark mode 🌗
-- [x] Jetpack Compose UI
+- Single Activity Design
+- Clean and Simple UI 🎨
+- Dark mode 🌗
+- Jetpack Compose UI
 
 
 ## Screenshots ✨
-<!-- You can add more screenshots here if you like -->
 <img src="/results/screenshot_1.png" width="260">&emsp;<img src="/results/screenshot_2.png" width="260">
 
 #### 🌞 Light Mode
@@ -29,7 +28,7 @@ The codebase focuses on following key things:
 #### 🌙 Dark Mode
 ![](results/dark_theme.png)
 
-## Built with 🛠
+## Libraries and tools 🛠
 
 - [Kotlin](https://kotlinlang.org/) - First class and official programming language for Android development.
 - [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) - For asynchronous and more..
@@ -42,7 +41,7 @@ The codebase focuses on following key things:
 - [Jetpack Compose UI Toolkit](https://developer.android.com/jetpack/compose) - Modern UI development toolkit.
 - [Accompanist](https://chrisbanes.github.io/accompanist/) - A collection of extension libraries for Jetpack Compose.
 - [Lottie Compose](https://github.com/airbnb/lottie/blob/master/android-compose.md) - Render After Effects animations natively on Android and iOS, Web, and React Native.
-- [spotless](https://github.com/diffplug/spotless) - Keep your code spotless.
+- [Spotless](https://github.com/diffplug/spotless) - Keep your code spotless.
 
 ## License
 ```
