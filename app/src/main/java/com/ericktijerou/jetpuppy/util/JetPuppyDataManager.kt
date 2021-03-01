@@ -87,11 +87,11 @@ object JetPuppyDataManager {
                     id = id.toString(),
                     section = section,
                     name = nameList[Random.nextInt(nameList.size)],
-                    age = if (section == HomeSectionType.SENIOR) "${(0..5).random()} years" else "${(0..11).random()} months",
+                    age = if (section == HomeSectionType.SENIOR) "${(1..5).random()} years" else "${(0..11).random()} months",
                     gender = genreList[Random.nextInt(genreList.size)],
                     imageUrl = avatar,
                     breed = "Breed$i",
-                    weight = "${(0..6).random()}kg or less",
+                    weight = "${(1..6).random()}kg or less",
                     summary = summaryList[Random.nextInt(summaryList.size)],
                     color = "Color$i"
                 )
