@@ -16,8 +16,8 @@
 package com.ericktijerou.jetpuppy.di
 
 import android.content.Context
-import com.ericktijerou.jetpuppy.util.PreferenceManager
 import com.ericktijerou.jetpuppy.util.JetPuppyDataManager
+import com.ericktijerou.jetpuppy.util.PreferenceManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

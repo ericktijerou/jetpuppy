@@ -67,6 +67,7 @@ import com.ericktijerou.jetpuppy.R
 import com.ericktijerou.jetpuppy.ui.theme.BlueOnboarding
 import com.ericktijerou.jetpuppy.ui.theme.JetpuppyTheme
 import com.ericktijerou.jetpuppy.util.JetPuppyDataManager
+import com.ericktijerou.jetpuppy.util.PageIndicator
 import com.ericktijerou.jetpuppy.util.Pager
 import com.ericktijerou.jetpuppy.util.PagerState
 import com.ericktijerou.jetpuppy.util.ThemedPreview
@@ -77,7 +78,7 @@ fun OnboardingScreen(
     viewModel: OnboardingViewModel,
     skip: () -> Unit = {}
 ) {
-    val items  = viewModel.getItems()
+    val items = viewModel.getItems()
     OnboardingScreenBody(items = items) {
         viewModel.setOnboarding()
         skip()
@@ -207,7 +208,6 @@ fun GetStartedButton(
     }
 }
 
-
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun OnboardingOptions(
@@ -305,31 +305,6 @@ fun OnboardingPage(item: OnboardingPage, isFinish: Boolean) {
                 },
             textAlign = TextAlign.Center
         )
-    }
-}
-
-@Composable
-fun PageIndicator(
-    pagesCount: Int,
-    currentPageIndex: Int,
-    color: Color,
-    modifier: Modifier = Modifier
-) {
-    Row(modifier = modifier.wrapContentSize()) {
-        for (pageIndex in 0 until pagesCount) {
-            val (tint, width) = if (currentPageIndex == pageIndex) {
-                color to 16.dp
-            } else {
-                color.copy(alpha = 0.5f) to 4.dp
-            }
-            Spacer(
-                modifier = Modifier
-                    .padding(4.dp)
-                    .height(4.dp)
-                    .width(width)
-                    .background(tint, RoundedCornerShape(percent = 50))
-            )
-        }
     }
 }
 

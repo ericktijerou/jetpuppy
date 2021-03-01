@@ -63,13 +63,13 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.ericktijerou.jetpuppy.R
 import com.ericktijerou.jetpuppy.ui.entity.Dog
-import com.ericktijerou.jetpuppy.ui.onboarding.PageIndicator
 import com.ericktijerou.jetpuppy.ui.theme.BlueOnboarding
 import com.ericktijerou.jetpuppy.ui.theme.JetpuppyTheme
 import com.ericktijerou.jetpuppy.util.EMPTY
+import com.ericktijerou.jetpuppy.util.JetPuppyDataManager
+import com.ericktijerou.jetpuppy.util.PageIndicator
 import com.ericktijerou.jetpuppy.util.Pager
 import com.ericktijerou.jetpuppy.util.PagerState
-import com.ericktijerou.jetpuppy.util.JetPuppyDataManager
 import com.ericktijerou.jetpuppy.util.ThemedPreview
 import com.ericktijerou.jetpuppy.util.lerp
 import com.ericktijerou.jetpuppy.util.verticalGradientScrim
@@ -364,7 +364,6 @@ fun DogGradient(modifier: Modifier, startYPercentage: Float, endYPercentage: Flo
 
 enum class SheetState { Open, Closed }
 
-
 @Preview("Dog screen body")
 @Composable
 fun PreviewDogScreenBody() {
@@ -382,4 +381,3 @@ fun PreviewDogScreenBodyDark() {
         DogScreenBody(puppySample) {}
     }
 }
-

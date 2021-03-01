@@ -23,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ericktijerou.jetpuppy.ui.dog.DogScreenBody
 import com.ericktijerou.jetpuppy.ui.entity.HomeDogSection
 import com.ericktijerou.jetpuppy.ui.entity.HomeSection
 import com.ericktijerou.jetpuppy.ui.entity.HomeShelterSection

@@ -23,7 +23,6 @@ import androidx.navigation.compose.popUpTo
 import androidx.navigation.compose.rememberNavController
 import com.ericktijerou.jetpuppy.ui.dog.DogScreen
 import com.ericktijerou.jetpuppy.ui.main.MainScreen
-import com.ericktijerou.jetpuppy.ui.onboarding.OnboardingPage
 import com.ericktijerou.jetpuppy.ui.onboarding.OnboardingScreen
 import com.ericktijerou.jetpuppy.ui.theme.JetpuppyTheme
 import com.ericktijerou.jetpuppy.util.Screen
