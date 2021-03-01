@@ -88,14 +88,16 @@ fun OnboardingScreen(
         val (pagerIndicator, button, options, wave, waveBody) = createRefs()
         val guideline = createGuidelineFromBottom(0.2f)
         val guidelineWave = createGuidelineFromTop(0.5f)
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .background(backgroundColor)
-            .constrainAs(waveBody) {
-                top.linkTo(parent.top)
-                bottom.linkTo(guidelineWave)
-                height = Dimension.fillToConstraints
-            }) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(backgroundColor)
+                .constrainAs(waveBody) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(guidelineWave)
+                    height = Dimension.fillToConstraints
+                }
+        ) {
         }
         Icon(
             painter = painterResource(R.drawable.ic_wave),
