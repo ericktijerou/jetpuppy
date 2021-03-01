@@ -20,7 +20,10 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring.DampingRatioLowBouncy
 import androidx.compose.animation.core.Spring.StiffnessLow
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandIn
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -71,7 +74,6 @@ import com.ericktijerou.jetpuppy.util.Pager
 import com.ericktijerou.jetpuppy.util.PagerState
 import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun OnboardingScreen(
     items: List<OnboardingPage>,
@@ -136,7 +138,7 @@ fun OnboardingScreen(
                 }
         )
 
-        AnimatedVisibility(
+        OnboardingOptions(
             visible = pagerState.currentPage != pagerState.maxPage,
             modifier = Modifier
                 .fillMaxWidth()
@@ -144,18 +146,13 @@ fun OnboardingScreen(
                 .constrainAs(options) {
                     bottom.linkTo(parent.bottom)
                 },
-            enter = slideInVertically(initialOffsetY = { 100 }),
-            exit = slideOutVertically(targetOffsetY = { 100 })
-        ) {
-            OnboardingOptions(
-                skip = { setFinish(true) },
-                next = {
-                    pagerState.currentPage += 1
-                }
-            )
-        }
+            skip = { setFinish(true) },
+            next = {
+                pagerState.currentPage += 1
+            }
+        )
 
-        AnimatedVisibility(
+        GetStartedButton(
             visible = pagerState.currentPage == pagerState.maxPage,
             modifier = Modifier.constrainAs(button) {
                 end.linkTo(parent.end)
@@ -163,23 +160,8 @@ fun OnboardingScreen(
                 bottom.linkTo(parent.bottom, 24.dp)
                 width = Dimension.fillToConstraints
             },
-            enter = slideInHorizontally(initialOffsetX = { 500 }) + fadeIn(),
-            exit = fadeOut(),
-        ) {
-            Button(
-                modifier = Modifier.wrapContentWidth(),
-                onClick = { setFinish(true) },
-                shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = BlueOnboarding),
-                elevation = ButtonDefaults.elevation(defaultElevation = 0.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.label_get_started),
-                    style = MaterialTheme.typography.button,
-                    color = Color.White
-                )
-            }
-        }
+            finish = { setFinish(true) }
+        )
     }
 
     LaunchedEffect(isFinish) {
@@ -191,36 +173,78 @@ fun OnboardingScreen(
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun OnboardingOptions(skip: () -> Unit, next: () -> Unit) {
-    ConstraintLayout(Modifier.fillMaxWidth()) {
-        val (textSkip, textNext) = createRefs()
-        TextButton(
-            onClick = skip,
-            modifier = Modifier
-                .constrainAs(textSkip) {
-                    start.linkTo(parent.start)
-                }
+fun GetStartedButton(
+    visible: Boolean,
+    modifier: Modifier = Modifier,
+    finish: () -> Unit
+) {
+    AnimatedVisibility(
+        visible = visible,
+        modifier = modifier,
+        enter = slideInHorizontally(initialOffsetX = { 1300 }, animationSpec = tween()),
+        exit = fadeOut()
+    ) {
+        Button(
+            modifier = Modifier.wrapContentWidth(),
+            onClick = finish,
+            shape = RoundedCornerShape(16.dp),
+            colors = ButtonDefaults.buttonColors(backgroundColor = BlueOnboarding),
+            elevation = ButtonDefaults.elevation(defaultElevation = 0.dp)
         ) {
             Text(
-                text = stringResource(R.string.label_skip),
-                style = MaterialTheme.typography.button.merge(TextStyle(fontWeight = FontWeight.Medium)),
-                color = JetpuppyTheme.colors.textPrimaryColor
+                text = stringResource(R.string.label_get_started),
+                style = MaterialTheme.typography.button,
+                color = Color.White
             )
         }
+    }
+}
 
-        TextButton(
-            onClick = next,
-            modifier = Modifier
-                .constrainAs(textNext) {
-                    end.linkTo(parent.end)
-                }
-        ) {
-            Text(
-                text = stringResource(R.string.label_next),
-                style = MaterialTheme.typography.button,
-                color = JetpuppyTheme.colors.textPrimaryColor
-            )
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun OnboardingOptions(
+    visible: Boolean,
+    modifier: Modifier = Modifier,
+    skip: () -> Unit,
+    next: () -> Unit
+) {
+    AnimatedVisibility(
+        visible = visible,
+        modifier = modifier,
+        exit = fadeOut()
+    ) {
+        ConstraintLayout(Modifier.fillMaxWidth()) {
+            val (textSkip, textNext) = createRefs()
+            TextButton(
+                onClick = skip,
+                modifier = Modifier
+                    .constrainAs(textSkip) {
+                        start.linkTo(parent.start)
+                    }
+            ) {
+                Text(
+                    text = stringResource(R.string.label_skip),
+                    style = MaterialTheme.typography.button.merge(TextStyle(fontWeight = FontWeight.Medium)),
+                    color = JetpuppyTheme.colors.textPrimaryColor
+                )
+            }
+
+            TextButton(
+                onClick = next,
+                modifier = Modifier
+                    .constrainAs(textNext) {
+                        end.linkTo(parent.end)
+                    }
+            ) {
+                Text(
+                    text = stringResource(R.string.label_next),
+                    style = MaterialTheme.typography.button,
+                    color = JetpuppyTheme.colors.textPrimaryColor
+                )
+            }
         }
     }
 }
