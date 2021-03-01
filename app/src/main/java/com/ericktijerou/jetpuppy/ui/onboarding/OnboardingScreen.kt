@@ -230,7 +230,7 @@ fun OnboardingPage(item: OnboardingPage, color: Color) {
 }
 
 @Composable
-private fun PageIndicator(pagesCount: Int, currentPageIndex: Int, modifier: Modifier = Modifier) {
+fun PageIndicator(pagesCount: Int, currentPageIndex: Int, modifier: Modifier = Modifier) {
     Row(modifier = modifier.wrapContentSize()) {
         for (pageIndex in 0 until pagesCount) {
             val (tint, width) = if (currentPageIndex == pageIndex) {

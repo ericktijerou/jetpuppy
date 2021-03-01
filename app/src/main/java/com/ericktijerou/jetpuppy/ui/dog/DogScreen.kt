@@ -46,6 +46,7 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material.swipeable
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,7 +61,11 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.ericktijerou.jetpuppy.R
 import com.ericktijerou.jetpuppy.ui.entity.Dog
+import com.ericktijerou.jetpuppy.ui.onboarding.OnboardingPage
+import com.ericktijerou.jetpuppy.ui.onboarding.PageIndicator
 import com.ericktijerou.jetpuppy.util.EMPTY
+import com.ericktijerou.jetpuppy.util.Pager
+import com.ericktijerou.jetpuppy.util.PagerState
 import com.ericktijerou.jetpuppy.util.SuperellipseCornerShape
 import com.ericktijerou.jetpuppy.util.lerp
 import com.ericktijerou.jetpuppy.util.verticalGradientScrim
@@ -80,6 +85,9 @@ fun DogScreen(viewModel: DogViewModel, dogId: String, onBackPressed: () -> Unit)
         val dragRange = infoMaxHeightInPixels - infoMinHeightInPixels
         val scope = rememberCoroutineScope()
         val dog = viewModel.getPuppyById(dogId)
+        val images = listOf(dog.imageUrl, dog.imageUrl, dog.imageUrl)
+        val pagerState = remember { PagerState() }
+        pagerState.maxPage = (images.size - 1).coerceAtLeast(0)
         ConstraintLayout(
             Modifier
                 .fillMaxSize()
@@ -98,17 +106,15 @@ fun DogScreen(viewModel: DogViewModel, dogId: String, onBackPressed: () -> Unit)
             } else {
                 -sheetState.offset.value / dragRange
             }.coerceIn(0f, 1f)
-            val (image, containerInfo, back, share) = createRefs()
+            val (image, containerInfo, back, share, imageIndicator) = createRefs()
             val offsetY = lerp(
                 infoMaxHeightInPixels,
                 0f,
                 openFraction
             )
 
-            CoilImage(
-                data = dog.imageUrl,
-                contentScale = ContentScale.Crop,
-                contentDescription = EMPTY,
+            Pager(
+                state = pagerState,
                 modifier = Modifier
                     .clickable(
                         enabled = sheetState.currentValue == SheetState.Open,
@@ -128,6 +134,24 @@ fun DogScreen(viewModel: DogViewModel, dogId: String, onBackPressed: () -> Unit)
                         )
                         width = Dimension.fillToConstraints
                         height = Dimension.fillToConstraints
+                    }
+            ) {
+                CoilImage(
+                    data = dog.imageUrl,
+                    contentScale = ContentScale.Crop,
+                    contentDescription = EMPTY,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+
+            PageIndicator(
+                pagesCount = images.count(),
+                currentPageIndex = pagerState.currentPage,
+                modifier = Modifier
+                    .constrainAs(imageIndicator) {
+                        bottom.linkTo(containerInfo.top, margin = 16.dp)
+                        linkTo(start = parent.start, end = parent.end)
+                        width = Dimension.fillToConstraints
                     }
             )
 
