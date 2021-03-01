@@ -61,7 +61,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.ericktijerou.jetpuppy.R
 import com.ericktijerou.jetpuppy.ui.entity.Dog
-import com.ericktijerou.jetpuppy.ui.onboarding.OnboardingPage
 import com.ericktijerou.jetpuppy.ui.onboarding.PageIndicator
 import com.ericktijerou.jetpuppy.util.EMPTY
 import com.ericktijerou.jetpuppy.util.Pager
@@ -72,14 +71,14 @@ import com.ericktijerou.jetpuppy.util.verticalGradientScrim
 import dev.chrisbanes.accompanist.coil.CoilImage
 import kotlinx.coroutines.launch
 
-private val InfoContainerMaxHeight = 400.dp
+private val InfoContainerMaxHeight = 380.dp
 private val InfoContainerMinHeight = 90.dp
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DogScreen(viewModel: DogViewModel, dogId: String, onBackPressed: () -> Unit) {
     BoxWithConstraints {
-        val sheetState = rememberSwipeableState(SheetState.Open)
+        val infoSheetState = rememberSwipeableState(SheetState.Open)
         val infoMaxHeightInPixels = with(LocalDensity.current) { InfoContainerMaxHeight.toPx() }
         val infoMinHeightInPixels = with(LocalDensity.current) { InfoContainerMinHeight.toPx() }
         val dragRange = infoMaxHeightInPixels - infoMinHeightInPixels
@@ -92,7 +91,7 @@ fun DogScreen(viewModel: DogViewModel, dogId: String, onBackPressed: () -> Unit)
             Modifier
                 .fillMaxSize()
                 .swipeable(
-                    state = sheetState,
+                    state = infoSheetState,
                     anchors = mapOf(
                         0f to SheetState.Closed,
                         -dragRange to SheetState.Open
@@ -101,12 +100,12 @@ fun DogScreen(viewModel: DogViewModel, dogId: String, onBackPressed: () -> Unit)
                     orientation = Orientation.Vertical
                 )
         ) {
-            val openFraction = if (sheetState.offset.value.isNaN()) {
+            val openFraction = if (infoSheetState.offset.value.isNaN()) {
                 0f
             } else {
-                -sheetState.offset.value / dragRange
+                -infoSheetState.offset.value / dragRange
             }.coerceIn(0f, 1f)
-            val (image, containerInfo, back, share, imageIndicator) = createRefs()
+            val (image, containerInfo, topBar, imageIndicator) = createRefs()
             val offsetY = lerp(
                 infoMaxHeightInPixels,
                 0f,
@@ -117,10 +116,10 @@ fun DogScreen(viewModel: DogViewModel, dogId: String, onBackPressed: () -> Unit)
                 state = pagerState,
                 modifier = Modifier
                     .clickable(
-                        enabled = sheetState.currentValue == SheetState.Open,
+                        enabled = infoSheetState.currentValue == SheetState.Open,
                         onClick = {
                             scope.launch {
-                                sheetState.animateTo(SheetState.Closed)
+                                infoSheetState.animateTo(SheetState.Closed)
                             }
                         }
                     )
@@ -144,57 +143,17 @@ fun DogScreen(viewModel: DogViewModel, dogId: String, onBackPressed: () -> Unit)
                 )
             }
 
-            PageIndicator(
-                pagesCount = images.count(),
-                currentPageIndex = pagerState.currentPage,
-                modifier = Modifier
-                    .constrainAs(imageIndicator) {
-                        bottom.linkTo(containerInfo.top, margin = 16.dp)
-                        linkTo(start = parent.start, end = parent.end)
-                        width = Dimension.fillToConstraints
-                    }
-            )
+            DogTopBar(onBackPressed = onBackPressed, modifier = Modifier.height(64.dp).constrainAs(topBar) {
+                linkTo(start = parent.start, end = parent.end)
+                top.linkTo(parent.top)
+                width = Dimension.fillToConstraints
+            })
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(64.dp)
-                    .verticalGradientScrim(
-                        color = Color.Black.copy(alpha = 0.3f),
-                        startYPercentage = 1f,
-                        endYPercentage = 0f
-                    )
-            )
-
-            IconButton(
-                onClick = onBackPressed,
-                Modifier.constrainAs(back) {
-                    start.linkTo(parent.start, margin = 8.dp)
-                    top.linkTo(parent.top, margin = 8.dp)
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.ArrowBack,
-                    contentDescription = EMPTY,
-                    tint = Color.White,
-                    modifier = Modifier.size(28.dp)
-                )
-            }
-
-            IconButton(
-                onClick = { },
-                Modifier.constrainAs(share) {
-                    end.linkTo(parent.end, margin = 8.dp)
-                    top.linkTo(parent.top, margin = 8.dp)
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Share,
-                    contentDescription = EMPTY,
-                    tint = Color.White,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
+            DogPageIndicator(modifier = Modifier.height(72.dp).constrainAs(imageIndicator) {
+                bottom.linkTo(image.bottom, margin = 8.dp)
+                linkTo(start = parent.start, end = parent.end)
+                width = Dimension.fillToConstraints
+            }, count = images.size, currentPage = pagerState.currentPage)
 
             Surface(
                 shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
@@ -212,15 +171,61 @@ fun DogScreen(viewModel: DogViewModel, dogId: String, onBackPressed: () -> Unit)
                     Modifier
                         .height(InfoContainerMinHeight)
                         .clickable(
-                            enabled = sheetState.currentValue == SheetState.Closed,
+                            enabled = infoSheetState.currentValue == SheetState.Closed,
                             onClick = {
                                 scope.launch {
-                                    sheetState.animateTo(SheetState.Open)
+                                    infoSheetState.animateTo(SheetState.Open)
                                 }
                             }
                         )
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun DogPageIndicator(modifier: Modifier, count: Int, currentPage: Int) {
+    Box(modifier, contentAlignment = Alignment.Center) {
+        DogGradient(modifier = Modifier.fillMaxSize(), 0f, 1f)
+        PageIndicator(pagesCount = count, currentPageIndex = currentPage)
+    }
+}
+
+@Composable
+fun DogTopBar(modifier: Modifier, onBackPressed: () -> Unit) {
+    ConstraintLayout(modifier) {
+        val (back, share) = createRefs()
+        DogGradient(modifier = Modifier.fillMaxSize(), 1f, 0f)
+
+        IconButton(
+            onClick = onBackPressed,
+            Modifier.constrainAs(back) {
+                start.linkTo(parent.start, margin = 8.dp)
+                top.linkTo(parent.top, margin = 8.dp)
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = EMPTY,
+                tint = Color.White,
+                modifier = Modifier.size(28.dp)
+            )
+        }
+
+        IconButton(
+            onClick = { },
+            Modifier.constrainAs(share) {
+                end.linkTo(parent.end, margin = 8.dp)
+                top.linkTo(parent.top, margin = 8.dp)
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Share,
+                contentDescription = EMPTY,
+                tint = Color.White,
+                modifier = Modifier.size(24.dp)
+            )
         }
     }
 }
@@ -328,6 +333,17 @@ fun InfoItemRow(@StringRes label: Int, value: String, modifier: Modifier) {
             style = MaterialTheme.typography.body2.copy(fontWeight = FontWeight.W500)
         )
     }
+}
+
+@Composable
+fun DogGradient(modifier: Modifier, startYPercentage: Float, endYPercentage: Float) {
+    Spacer(
+        modifier = modifier.verticalGradientScrim(
+            color = Color.Black.copy(alpha = 0.3f),
+            startYPercentage = startYPercentage,
+            endYPercentage = endYPercentage
+        )
+    )
 }
 
 enum class SheetState { Open, Closed }
