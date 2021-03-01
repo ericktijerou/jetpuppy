@@ -18,6 +18,14 @@
 <!-- You can add more screenshots here if you like -->
 <img src="/results/screenshot_1.png" width="260">&emsp;<img src="/results/screenshot_2.png" width="260">
 
+#### 🌞 Light Mode
+
+![](art/light_theme.png)
+
+#### 🌙 Dark Mode
+
+![](art/dark_theme.png)
+
 ## License
 ```
 Copyright 2020 The Android Open Source Project
