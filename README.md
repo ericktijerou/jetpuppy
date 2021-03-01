@@ -18,16 +18,14 @@ The codebase focuses on following key things:
 
 ## Screenshots ✨
 <!-- You can add more screenshots here if you like -->
-![img](image/onboarding.gif)
+![img](results/onboarding.gif)
 <img src="/results/screenshot_1.png" width="260">&emsp;<img src="/results/screenshot_2.png" width="260">
 
 #### 🌞 Light Mode
-
-![](result/light_theme.png)
+![](results/light_theme.png)
 
 #### 🌙 Dark Mode
-
-![](result/dark_theme.png)
+![](results/dark_theme.png)
 
 ## Motivation and Context
 The purpose of this project is to try new Android technologies and learn how it works in an app.
