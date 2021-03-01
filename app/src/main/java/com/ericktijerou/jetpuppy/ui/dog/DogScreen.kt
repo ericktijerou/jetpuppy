@@ -31,7 +31,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.Icon
@@ -62,11 +63,11 @@ import androidx.constraintlayout.compose.Dimension
 import com.ericktijerou.jetpuppy.R
 import com.ericktijerou.jetpuppy.ui.entity.Dog
 import com.ericktijerou.jetpuppy.ui.onboarding.PageIndicator
+import com.ericktijerou.jetpuppy.ui.theme.BlueOnboarding
 import com.ericktijerou.jetpuppy.ui.theme.JetpuppyTheme
 import com.ericktijerou.jetpuppy.util.EMPTY
 import com.ericktijerou.jetpuppy.util.Pager
 import com.ericktijerou.jetpuppy.util.PagerState
-import com.ericktijerou.jetpuppy.util.SuperellipseCornerShape
 import com.ericktijerou.jetpuppy.util.lerp
 import com.ericktijerou.jetpuppy.util.verticalGradientScrim
 import dev.chrisbanes.accompanist.coil.CoilImage
@@ -272,25 +273,21 @@ fun InfoContainer(dog: Dog, modifier: Modifier) {
 
 @Composable
 fun AdoptButton() {
-    Card(
+    Button(
+        onClick = {},
         modifier = Modifier
             .padding(start = 24.dp, end = 24.dp, top = 16.dp)
             .height(48.dp)
             .fillMaxSize(),
-        shape = SuperellipseCornerShape(12.dp),
-        backgroundColor = MaterialTheme.colors.secondary,
+        shape = RoundedCornerShape(16.dp),
+        colors = ButtonDefaults.buttonColors(backgroundColor = BlueOnboarding),
+        elevation = ButtonDefaults.elevation(defaultElevation = 0.dp)
     ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .clickable { }
-        ) {
-            Text(
-                text = stringResource(R.string.label_adopt),
-                style = MaterialTheme.typography.button
-            )
-        }
+        Text(
+            text = stringResource(R.string.label_adopt),
+            style = MaterialTheme.typography.button,
+            color = Color.White
+        )
     }
 }
 
