@@ -20,15 +20,10 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring.DampingRatioLowBouncy
 import androidx.compose.animation.core.Spring.StiffnessLow
-import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandIn
-import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -61,6 +56,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -70,16 +66,26 @@ import com.airbnb.lottie.compose.rememberLottieAnimationState
 import com.ericktijerou.jetpuppy.R
 import com.ericktijerou.jetpuppy.ui.theme.BlueOnboarding
 import com.ericktijerou.jetpuppy.ui.theme.JetpuppyTheme
+import com.ericktijerou.jetpuppy.util.JetPuppyDataManager
 import com.ericktijerou.jetpuppy.util.Pager
 import com.ericktijerou.jetpuppy.util.PagerState
+import com.ericktijerou.jetpuppy.util.ThemedPreview
 import kotlinx.coroutines.delay
 
 @Composable
 fun OnboardingScreen(
-    items: List<OnboardingPage>,
     viewModel: OnboardingViewModel,
     skip: () -> Unit = {}
 ) {
+    val items  = viewModel.getItems()
+    OnboardingScreenBody(items = items) {
+        viewModel.setOnboarding()
+        skip()
+    }
+}
+
+@Composable
+fun OnboardingScreenBody(items: List<OnboardingPage>, onFinish: () -> Unit) {
     val pagerState = remember { PagerState() }
     val (isFinish, setFinish) = remember { mutableStateOf(false) }
     pagerState.maxPage = (items.size - 1).coerceAtLeast(0)
@@ -129,7 +135,7 @@ fun OnboardingScreen(
         PageIndicator(
             pagesCount = items.count(),
             currentPageIndex = pagerState.currentPage,
-            color = JetpuppyTheme.colors.textPrimaryColor,
+            color = JetpuppyTheme.colors.textSecondaryColor,
             modifier = Modifier
                 .padding(16.dp)
                 .constrainAs(pagerIndicator) {
@@ -167,8 +173,7 @@ fun OnboardingScreen(
     LaunchedEffect(isFinish) {
         if (isFinish) {
             delay(500)
-            viewModel.setOnboarding()
-            skip()
+            onFinish()
         }
     }
 }
@@ -325,5 +330,21 @@ fun PageIndicator(
                     .background(tint, RoundedCornerShape(percent = 50))
             )
         }
+    }
+}
+
+@Preview("Onboarding screen body")
+@Composable
+fun PreviewOnboardingScreenBody() {
+    ThemedPreview {
+        OnboardingScreenBody(JetPuppyDataManager.onboardingItems) {}
+    }
+}
+
+@Preview("Onboarding screen body dark")
+@Composable
+fun PreviewOnboardingScreenBodyDark() {
+    ThemedPreview(darkTheme = true) {
+        OnboardingScreenBody(JetPuppyDataManager.onboardingItems) {}
     }
 }

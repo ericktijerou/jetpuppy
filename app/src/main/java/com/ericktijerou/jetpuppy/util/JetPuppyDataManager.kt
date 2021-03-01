@@ -17,25 +17,57 @@ package com.ericktijerou.jetpuppy.util
 
 import com.ericktijerou.jetpuppy.R
 import com.ericktijerou.jetpuppy.ui.entity.Dog
+import com.ericktijerou.jetpuppy.ui.entity.HomeDogSection
 import com.ericktijerou.jetpuppy.ui.entity.HomeSectionType
+import com.ericktijerou.jetpuppy.ui.entity.HomeShelterSection
 import com.ericktijerou.jetpuppy.ui.entity.Shelter
+import com.ericktijerou.jetpuppy.ui.onboarding.OnboardingPage
 import kotlin.random.Random
 
-object PuppyDataManager {
-    val puppies by lazy {
-        val homeSections =
-            listOf(HomeSectionType.RECOMMENDED, HomeSectionType.NEAR_YOU, HomeSectionType.SENIOR)
-        generatePuppyDataSet(homeSections)
-    }
-    val shelters by lazy { generateShelterDataSet() }
+object JetPuppyDataManager {
 
-    private fun generatePuppyDataSet(sections: List<String>): List<Dog> {
-        val list = mutableListOf<Dog>()
-        sections.forEach { section ->
-            list.addAll(generateBySection(section))
-        }
-        return list
+    val puppy by lazy { puppies.first() }
+
+    private val recommendedList by lazy { generateBySection(HomeSectionType.RECOMMENDED) }
+    private val nearYouList by lazy { generateBySection(HomeSectionType.NEAR_YOU) }
+    private val seniorList by lazy { generateBySection(HomeSectionType.SENIOR) }
+
+    val homeSectionList by lazy {
+        listOf(
+            HomeDogSection(
+                R.string.label_recommended,
+                R.string.caption_recommended,
+                recommendedList
+            ),
+            HomeShelterSection(
+                R.string.label_shelter,
+                R.string.caption_shelter,
+                shelters
+            ),
+            HomeDogSection(
+                R.string.label_near_you,
+                R.string.caption_near_you,
+                nearYouList
+            ),
+            HomeDogSection(
+                R.string.label_senior,
+                R.string.caption_senior,
+                seniorList
+            )
+        )
     }
+
+    val onboardingItems by lazy {
+        listOf(
+            OnboardingPage.Page1,
+            OnboardingPage.Page2,
+            OnboardingPage.Page3
+        )
+    }
+
+    val puppies by lazy { recommendedList + nearYouList + seniorList }
+
+    private val shelters by lazy { generateShelterDataSet() }
 
     private fun generateBySection(@HomeSectionType section: String): List<Dog> {
         val list = mutableListOf<Dog>()

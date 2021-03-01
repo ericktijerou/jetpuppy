@@ -21,7 +21,8 @@ import androidx.annotation.StringDef
 @StringDef(
     HomeSectionType.NEAR_YOU,
     HomeSectionType.RECOMMENDED,
-    HomeSectionType.SENIOR
+    HomeSectionType.SENIOR,
+    HomeSectionType.SHELTER
 )
 
 annotation class HomeSectionType {
@@ -29,5 +30,6 @@ annotation class HomeSectionType {
         const val NEAR_YOU = "near_you"
         const val RECOMMENDED = "recommended"
         const val SENIOR = "senior"
+        const val SHELTER = "shelter"
     }
 }

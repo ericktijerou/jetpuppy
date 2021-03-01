@@ -15,52 +15,73 @@
  */
 package com.ericktijerou.jetpuppy.ui.home
 
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ericktijerou.jetpuppy.R
-import com.ericktijerou.jetpuppy.ui.entity.HomeSectionType
+import com.ericktijerou.jetpuppy.ui.dog.DogScreenBody
+import com.ericktijerou.jetpuppy.ui.entity.HomeDogSection
+import com.ericktijerou.jetpuppy.ui.entity.HomeSection
+import com.ericktijerou.jetpuppy.ui.entity.HomeShelterSection
 import com.ericktijerou.jetpuppy.ui.home.list.DogList
 import com.ericktijerou.jetpuppy.ui.home.list.ShelterList
+import com.ericktijerou.jetpuppy.util.JetPuppyDataManager
+import com.ericktijerou.jetpuppy.util.ThemedPreview
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel, modifier: Modifier, navigateToDog: (String) -> Unit) {
+    HomeScreenBody(sections = viewModel.getHomeSectionList(), navigateToDog = navigateToDog, modifier = modifier)
+}
+
+@Composable
+fun HomeScreenBody(sections: List<HomeSection>, modifier: Modifier = Modifier, navigateToDog: (String) -> Unit) {
     LazyColumn(modifier = modifier) {
-        item {
-            DogList(
-                title = R.string.label_recommended,
-                caption = R.string.caption_recommended,
-                dogs = viewModel.getPuppyListBySection(HomeSectionType.RECOMMENDED),
-                modifier = Modifier.padding(top = 16.dp),
-                navigateTo = navigateToDog
-            )
+        sections.forEach {
+            item {
+                when (it) {
+                    is HomeShelterSection -> {
+                        ShelterList(
+                            title = it.title,
+                            caption = it.caption,
+                            shelters = it.list
+                        )
+                    }
+                    is HomeDogSection -> {
+                        DogList(
+                            title = it.title,
+                            caption = it.caption,
+                            dogs = it.list,
+                            modifier = Modifier.padding(top = 16.dp),
+                            navigateTo = navigateToDog
+                        )
+                    }
+                }
+            }
         }
         item {
-            ShelterList(
-                title = R.string.label_shelter,
-                caption = R.string.caption_shelter,
-                shelters = viewModel.getShelterList()
-            )
+            Spacer(modifier = Modifier.height(16.dp))
         }
-        item {
-            DogList(
-                title = R.string.label_near_you,
-                caption = R.string.caption_near_you,
-                dogs = viewModel.getPuppyListBySection(HomeSectionType.NEAR_YOU),
-                modifier = Modifier.padding(top = 16.dp),
-                navigateTo = navigateToDog
-            )
-        }
-        item {
-            DogList(
-                title = R.string.label_senior,
-                caption = R.string.caption_senior,
-                dogs = viewModel.getPuppyListBySection(HomeSectionType.SENIOR),
-                modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
-                navigateTo = navigateToDog
-            )
-        }
+    }
+}
+
+@Preview("Home screen body")
+@Composable
+fun PreviewHomeScreenBody() {
+    ThemedPreview {
+        val sections = JetPuppyDataManager.homeSectionList
+        HomeScreenBody(sections) {}
+    }
+}
+
+@Preview("Home screen body dark")
+@Composable
+fun PreviewHomeScreenBodyDark() {
+    ThemedPreview(darkTheme = true) {
+        val sections = JetPuppyDataManager.homeSectionList
+        HomeScreenBody(sections) {}
     }
 }

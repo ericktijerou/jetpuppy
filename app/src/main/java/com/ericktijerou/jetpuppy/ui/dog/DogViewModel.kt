@@ -18,13 +18,13 @@ package com.ericktijerou.jetpuppy.ui.dog
 import androidx.lifecycle.ViewModel
 import com.ericktijerou.jetpuppy.ui.entity.Dog
 import com.ericktijerou.jetpuppy.ui.entity.orEmpty
-import com.ericktijerou.jetpuppy.util.PuppyDataManager
+import com.ericktijerou.jetpuppy.util.JetPuppyDataManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class DogViewModel @Inject
-constructor(private val dataManager: PuppyDataManager) : ViewModel() {
+constructor(private val dataManager: JetPuppyDataManager) : ViewModel() {
     fun getPuppyById(id: String): Dog {
         return dataManager.puppies.find { dog -> dog.id == id }.orEmpty()
     }

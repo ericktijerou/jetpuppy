@@ -37,14 +37,7 @@ fun JetpuppyApp() {
             val navController = rememberNavController()
             NavHost(navController, startDestination = Screen.Main.route) {
                 composable(Screen.Onboarding.route) {
-                    OnboardingScreen(
-                        items = listOf(
-                            OnboardingPage.Page1,
-                            OnboardingPage.Page2,
-                            OnboardingPage.Page3
-                        ),
-                        viewModel = it.hiltNavGraphViewModel()
-                    ) {
+                    OnboardingScreen(viewModel = it.hiltNavGraphViewModel()) {
                         navController.navigate(route = Screen.Main.route) {
                             popUpTo(Screen.Onboarding.route) { inclusive = true }
                         }

@@ -57,6 +57,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -68,6 +69,8 @@ import com.ericktijerou.jetpuppy.ui.theme.JetpuppyTheme
 import com.ericktijerou.jetpuppy.util.EMPTY
 import com.ericktijerou.jetpuppy.util.Pager
 import com.ericktijerou.jetpuppy.util.PagerState
+import com.ericktijerou.jetpuppy.util.JetPuppyDataManager
+import com.ericktijerou.jetpuppy.util.ThemedPreview
 import com.ericktijerou.jetpuppy.util.lerp
 import com.ericktijerou.jetpuppy.util.verticalGradientScrim
 import dev.chrisbanes.accompanist.coil.CoilImage
@@ -76,16 +79,21 @@ import kotlinx.coroutines.launch
 private val InfoContainerMaxHeight = 380.dp
 private val InfoContainerMinHeight = 90.dp
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DogScreen(viewModel: DogViewModel, dogId: String, onBackPressed: () -> Unit) {
+    val dog = viewModel.getPuppyById(dogId)
+    DogScreenBody(dog = dog, onBackPressed)
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun DogScreenBody(dog: Dog, onBackPressed: () -> Unit) {
     BoxWithConstraints {
         val infoSheetState = rememberSwipeableState(SheetState.Open)
         val infoMaxHeightInPixels = with(LocalDensity.current) { InfoContainerMaxHeight.toPx() }
         val infoMinHeightInPixels = with(LocalDensity.current) { InfoContainerMinHeight.toPx() }
         val dragRange = infoMaxHeightInPixels - infoMinHeightInPixels
         val scope = rememberCoroutineScope()
-        val dog = viewModel.getPuppyById(dogId)
         val images = listOf(dog.imageUrl, dog.imageUrl, dog.imageUrl)
         val pagerState = remember { PagerState() }
         pagerState.maxPage = (images.size - 1).coerceAtLeast(0)
@@ -355,3 +363,23 @@ fun DogGradient(modifier: Modifier, startYPercentage: Float, endYPercentage: Flo
 }
 
 enum class SheetState { Open, Closed }
+
+
+@Preview("Dog screen body")
+@Composable
+fun PreviewDogScreenBody() {
+    ThemedPreview {
+        val puppySample = JetPuppyDataManager.puppy
+        DogScreenBody(puppySample) {}
+    }
+}
+
+@Preview("Dog screen body dark")
+@Composable
+fun PreviewDogScreenBodyDark() {
+    ThemedPreview(darkTheme = true) {
+        val puppySample = JetPuppyDataManager.puppy
+        DogScreenBody(puppySample) {}
+    }
+}
+

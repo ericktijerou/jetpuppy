@@ -44,10 +44,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ericktijerou.jetpuppy.R
 import com.ericktijerou.jetpuppy.ui.entity.Dog
+import com.ericktijerou.jetpuppy.util.JetPuppyDataManager
 import com.ericktijerou.jetpuppy.util.Screen
+import com.ericktijerou.jetpuppy.util.ThemedPreview
 import com.ericktijerou.jetpuppy.util.verticalGradientScrim
 import dev.chrisbanes.accompanist.coil.CoilImage
 
@@ -56,7 +60,7 @@ fun DogList(
     @StringRes title: Int,
     @StringRes caption: Int,
     dogs: List<Dog>,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     navigateTo: (String) -> Unit
 ) {
     Card(modifier = modifier, backgroundColor = MaterialTheme.colors.primary) {
@@ -149,5 +153,41 @@ fun DogItem(
                 tint = Color.White
             )
         }
+    }
+}
+
+@Preview("Dog item")
+@Composable
+fun PreviewDogItemBody() {
+    ThemedPreview {
+        val puppySample = JetPuppyDataManager.puppy
+        DogItem(puppySample, {})
+    }
+}
+
+@Preview("Dog item dark")
+@Composable
+fun PreviewDogItemBodyDark() {
+    ThemedPreview(darkTheme = true) {
+        val puppySample = JetPuppyDataManager.puppy
+        DogItem(puppySample, {})
+    }
+}
+
+@Preview("Dog list")
+@Composable
+fun PreviewDogListBody() {
+    ThemedPreview {
+        val puppiesSample = JetPuppyDataManager.puppies
+        DogList(R.string.label_recommended, R.string.caption_recommended, puppiesSample) {}
+    }
+}
+
+@Preview("Dog list dark")
+@Composable
+fun PreviewDogListBodyDark() {
+    ThemedPreview(darkTheme = true) {
+        val puppiesSample = JetPuppyDataManager.puppies
+        DogList(R.string.label_recommended, R.string.caption_recommended, puppiesSample) {}
     }
 }

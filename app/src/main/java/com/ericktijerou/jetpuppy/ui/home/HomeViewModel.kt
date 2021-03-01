@@ -17,20 +17,17 @@ package com.ericktijerou.jetpuppy.ui.home
 
 import androidx.lifecycle.ViewModel
 import com.ericktijerou.jetpuppy.ui.entity.Dog
+import com.ericktijerou.jetpuppy.ui.entity.HomeSection
 import com.ericktijerou.jetpuppy.ui.entity.HomeSectionType
 import com.ericktijerou.jetpuppy.ui.entity.Shelter
-import com.ericktijerou.jetpuppy.util.PuppyDataManager
+import com.ericktijerou.jetpuppy.util.JetPuppyDataManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject
-constructor(private val dataManager: PuppyDataManager) : ViewModel() {
-    fun getPuppyListBySection(@HomeSectionType sectionType: String): List<Dog> {
-        return dataManager.puppies.filter { it.section == sectionType }
-    }
-
-    fun getShelterList(): List<Shelter> {
-        return dataManager.shelters
+constructor(private val dataManager: JetPuppyDataManager) : ViewModel() {
+    fun getHomeSectionList(): List<HomeSection> {
+        return dataManager.homeSectionList
     }
 }
