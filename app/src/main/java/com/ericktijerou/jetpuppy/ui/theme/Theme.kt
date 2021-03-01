@@ -56,11 +56,15 @@ private val LightColorPalette = lightColors(
 )
 
 private val LightPuppyColorPalette = JetpuppyColors(
+    textPrimaryColor = Color.Black,
+    textSecondaryColor = TextSecondaryLight,
     searchBoxColor = GraySearchBoxLight,
     isDark = false
 )
 
 private val DarkPuppyColorPalette = JetpuppyColors(
+    textPrimaryColor = Color.White,
+    textSecondaryColor = TextSecondaryDark,
     searchBoxColor = GraySearchBoxDark,
     isDark = true
 )
@@ -102,15 +106,23 @@ fun ProvideJetpuppyColors(
 
 @Stable
 class JetpuppyColors(
+    textPrimaryColor: Color,
+    textSecondaryColor: Color,
     searchBoxColor: Color,
     isDark: Boolean
 ) {
+    var textPrimaryColor by mutableStateOf(textPrimaryColor)
+        private set
+    var textSecondaryColor by mutableStateOf(textSecondaryColor)
+        private set
     var searchBoxColor by mutableStateOf(searchBoxColor)
         private set
     var isDark by mutableStateOf(isDark)
         private set
 
     fun update(other: JetpuppyColors) {
+        textPrimaryColor = other.textPrimaryColor
+        textSecondaryColor = other.textSecondaryColor
         searchBoxColor = other.searchBoxColor
         isDark = other.isDark
     }

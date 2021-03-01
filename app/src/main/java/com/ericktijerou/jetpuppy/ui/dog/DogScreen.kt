@@ -62,6 +62,7 @@ import androidx.constraintlayout.compose.Dimension
 import com.ericktijerou.jetpuppy.R
 import com.ericktijerou.jetpuppy.ui.entity.Dog
 import com.ericktijerou.jetpuppy.ui.onboarding.PageIndicator
+import com.ericktijerou.jetpuppy.ui.theme.JetpuppyTheme
 import com.ericktijerou.jetpuppy.util.EMPTY
 import com.ericktijerou.jetpuppy.util.Pager
 import com.ericktijerou.jetpuppy.util.PagerState
@@ -143,17 +144,27 @@ fun DogScreen(viewModel: DogViewModel, dogId: String, onBackPressed: () -> Unit)
                 )
             }
 
-            DogTopBar(onBackPressed = onBackPressed, modifier = Modifier.height(64.dp).constrainAs(topBar) {
-                linkTo(start = parent.start, end = parent.end)
-                top.linkTo(parent.top)
-                width = Dimension.fillToConstraints
-            })
+            DogTopBar(
+                onBackPressed = onBackPressed,
+                modifier = Modifier
+                    .height(64.dp)
+                    .constrainAs(topBar) {
+                        linkTo(start = parent.start, end = parent.end)
+                        top.linkTo(parent.top)
+                        width = Dimension.fillToConstraints
+                    }
+            )
 
-            DogPageIndicator(modifier = Modifier.height(72.dp).constrainAs(imageIndicator) {
-                bottom.linkTo(image.bottom, margin = 8.dp)
-                linkTo(start = parent.start, end = parent.end)
-                width = Dimension.fillToConstraints
-            }, count = images.size, currentPage = pagerState.currentPage)
+            DogPageIndicator(
+                modifier = Modifier
+                    .height(72.dp)
+                    .constrainAs(imageIndicator) {
+                        bottom.linkTo(image.bottom, margin = 8.dp)
+                        linkTo(start = parent.start, end = parent.end)
+                        width = Dimension.fillToConstraints
+                    },
+                count = images.size, currentPage = pagerState.currentPage
+            )
 
             Surface(
                 shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
@@ -235,7 +246,7 @@ fun InfoContainer(dog: Dog, modifier: Modifier) {
     Column(
         Modifier
             .fillMaxWidth()
-            .background(color = Color.White)
+            .background(color = MaterialTheme.colors.primary)
     ) {
 
         val rowsModifier = Modifier
@@ -300,7 +311,7 @@ fun TitleRow(title: String, breed: String, modifier: Modifier = Modifier) {
                 text = breed,
                 style = MaterialTheme.typography.body2,
                 modifier = Modifier.padding(top = 4.dp),
-                color = Color.Black.copy(alpha = 0.6f)
+                color = JetpuppyTheme.colors.textSecondaryColor
             )
         }
 
@@ -326,7 +337,7 @@ fun InfoItemRow(@StringRes label: Int, value: String, modifier: Modifier) {
             text = stringResource(label),
             style = MaterialTheme.typography.body2,
             modifier = Modifier.width(120.dp),
-            color = Color.Black.copy(alpha = 0.6f)
+            color = JetpuppyTheme.colors.textSecondaryColor
         )
         Text(
             text = value,

@@ -33,3 +33,6 @@ val GraySearchBoxDark = Color(0xFF1F1F1F)
 
 val BackgroundLight = Color(0xFFF2F3F5)
 val BackgroundDark = Color(0xFF0A0A0A)
+
+val TextSecondaryLight = Color(0xFF747577)
+val TextSecondaryDark = Color(0xFF8B8C8F)

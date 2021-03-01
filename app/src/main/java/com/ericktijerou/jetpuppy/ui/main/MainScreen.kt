@@ -30,7 +30,6 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentColor
@@ -210,7 +209,7 @@ private fun UserInputText(
                     ),
                     maxLines = 1,
                     cursorBrush = SolidColor(LocalContentColor.current),
-                    textStyle = MaterialTheme.typography.body1,
+                    textStyle = MaterialTheme.typography.body1.copy(color = JetpuppyTheme.colors.textPrimaryColor),
                     modifier = Modifier
                         .fillMaxWidth()
                         .constrainAs(textField) {
@@ -221,12 +220,10 @@ private fun UserInputText(
                         }
                 )
 
-                val disableContentColor =
-                    MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled)
                 if (textFieldValue.text.isEmpty()) {
                     Text(
                         text = stringResource(id = R.string.hint_search),
-                        style = MaterialTheme.typography.body1.copy(color = disableContentColor),
+                        style = MaterialTheme.typography.body1.copy(color = JetpuppyTheme.colors.textSecondaryColor),
                         modifier = Modifier.constrainAs(text) {
                             start.linkTo(textField.start)
                             linkTo(top = parent.top, bottom = parent.bottom)
@@ -238,7 +235,7 @@ private fun UserInputText(
                         contentDescription = EMPTY,
                         Modifier
                             .size(20.dp)
-                            .clickable { onTextChanged(TextFieldValue(EMPTY))}
+                            .clickable { onTextChanged(TextFieldValue(EMPTY)) }
                             .constrainAs(close) {
                                 end.linkTo(parent.end)
                                 top.linkTo(parent.top)
