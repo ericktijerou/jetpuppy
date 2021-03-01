@@ -170,7 +170,7 @@ fun OnboardingScreenBody(items: List<OnboardingPage>, onFinish: () -> Unit) {
 
     LaunchedEffect(isFinish) {
         if (isFinish) {
-            delay(500)
+            delay(400)
             onFinish()
         }
     }
