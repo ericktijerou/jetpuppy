@@ -27,6 +27,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,8 +40,8 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
@@ -50,6 +51,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -61,6 +63,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieAnimationSpec
 import com.airbnb.lottie.compose.rememberLottieAnimationState
 import com.ericktijerou.jetpuppy.R
+import com.ericktijerou.jetpuppy.ui.theme.JetpuppyTheme
 import com.ericktijerou.jetpuppy.util.Pager
 import com.ericktijerou.jetpuppy.util.PagerState
 import kotlinx.coroutines.delay
@@ -82,14 +85,33 @@ fun OnboardingScreen(
         spring(DampingRatioLowBouncy, StiffnessVeryLow)
     )
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-        val (pagerIndicator, button, options) = createRefs()
+        val (pagerIndicator, button, options, wave, waveBody) = createRefs()
         val guideline = createGuidelineFromBottom(0.2f)
-
+        val guidelineWave = createGuidelineFromTop(0.5f)
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .background(backgroundColor)
+            .constrainAs(waveBody) {
+                top.linkTo(parent.top)
+                bottom.linkTo(guidelineWave)
+                height = Dimension.fillToConstraints
+            }) {
+        }
+        Icon(
+            painter = painterResource(R.drawable.ic_wave),
+            contentDescription = "",
+            tint = backgroundColor,
+            modifier = Modifier
+                .fillMaxWidth()
+                .constrainAs(wave) {
+                    top.linkTo(guidelineWave)
+                }
+        )
         Pager(
             state = pagerState,
             modifier = Modifier.fillMaxSize()
         ) {
-            OnboardingPage(items[page], backgroundColor, isFinish)
+            OnboardingPage(items[page], isFinish)
         }
 
         if (isFinish) return@ConstraintLayout
@@ -116,9 +138,12 @@ fun OnboardingScreen(
             enter = slideInVertically(initialOffsetY = { 100 }),
             exit = slideOutVertically(targetOffsetY = { 100 })
         ) {
-            OnboardingOptions(skip = { setFinish(true) }, next = {
-                pagerState.currentPage += 1
-            })
+            OnboardingOptions(
+                skip = { setFinish(true) },
+                next = {
+                    pagerState.currentPage += 1
+                }
+            )
         }
 
         AnimatedVisibility(
@@ -148,7 +173,7 @@ fun OnboardingScreen(
 
     LaunchedEffect(isFinish) {
         if (isFinish) {
-            delay(500)
+            delay(400)
             viewModel.setOnboarding()
             skip()
         }
@@ -169,7 +194,7 @@ fun OnboardingOptions(skip: () -> Unit, next: () -> Unit) {
             Text(
                 text = stringResource(R.string.label_skip),
                 style = MaterialTheme.typography.button.merge(TextStyle(fontWeight = FontWeight.Medium)),
-                color = Color.White
+                color = JetpuppyTheme.colors.textPrimaryColor
             )
         }
 
@@ -183,65 +208,63 @@ fun OnboardingOptions(skip: () -> Unit, next: () -> Unit) {
             Text(
                 text = stringResource(R.string.label_next),
                 style = MaterialTheme.typography.button,
-                color = Color.White
+                color = JetpuppyTheme.colors.textPrimaryColor
             )
         }
     }
 }
 
 @Composable
-fun OnboardingPage(item: OnboardingPage, color: Color, isFinish: Boolean) {
-    Surface(color = color) {
-        ConstraintLayout(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            if (isFinish) return@ConstraintLayout
-            val (image, title, subtitle) = createRefs()
-            val guideline = createGuidelineFromBottom(0.2f)
-            val animationSpec = remember { LottieAnimationSpec.RawRes(item.animation) }
-            val animationState =
-                rememberLottieAnimationState(autoPlay = true, repeatCount = Integer.MAX_VALUE)
-            LottieAnimation(
-                spec = animationSpec,
-                animationState = animationState,
-                modifier = Modifier
-                    .padding(32.dp)
-                    .constrainAs(image) {
-                        linkTo(
-                            start = parent.start,
-                            top = parent.top,
-                            end = parent.end,
-                            bottom = title.top
-                        )
-                    },
-            )
-            Text(
-                text = stringResource(id = item.title),
-                style = MaterialTheme.typography.h5,
-                color = Color.White,
-                modifier = Modifier
-                    .constrainAs(title) {
-                        start.linkTo(parent.start, 16.dp)
-                        end.linkTo(parent.end, 16.dp)
-                        bottom.linkTo(subtitle.top, 16.dp)
-                        width = Dimension.fillToConstraints
-                    },
-                textAlign = TextAlign.Center
-            )
-            Text(
-                text = stringResource(id = item.subtitle),
-                color = Color.White,
-                style = MaterialTheme.typography.body2,
-                modifier = Modifier
-                    .constrainAs(subtitle) {
-                        start.linkTo(parent.start, 16.dp)
-                        end.linkTo(parent.end, 16.dp)
-                        bottom.linkTo(guideline, 32.dp)
-                        width = Dimension.fillToConstraints
-                    },
-                textAlign = TextAlign.Center
-            )
-        }
+fun OnboardingPage(item: OnboardingPage, isFinish: Boolean) {
+    ConstraintLayout(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        if (isFinish) return@ConstraintLayout
+        val (image, title, subtitle) = createRefs()
+        val guideline = createGuidelineFromBottom(0.2f)
+        val animationSpec = remember { LottieAnimationSpec.RawRes(item.animation) }
+        val animationState =
+            rememberLottieAnimationState(autoPlay = true, repeatCount = Integer.MAX_VALUE)
+        LottieAnimation(
+            spec = animationSpec,
+            animationState = animationState,
+            modifier = Modifier
+                .padding(56.dp)
+                .constrainAs(image) {
+                    linkTo(
+                        start = parent.start,
+                        top = parent.top,
+                        end = parent.end,
+                        bottom = title.top
+                    )
+                },
+        )
+        Text(
+            text = stringResource(id = item.title),
+            style = MaterialTheme.typography.h5,
+            color = JetpuppyTheme.colors.textPrimaryColor,
+            modifier = Modifier
+                .constrainAs(title) {
+                    start.linkTo(parent.start, 16.dp)
+                    end.linkTo(parent.end, 16.dp)
+                    bottom.linkTo(subtitle.top, 16.dp)
+                    width = Dimension.fillToConstraints
+                },
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = stringResource(id = item.subtitle),
+            color = JetpuppyTheme.colors.textPrimaryColor,
+            style = MaterialTheme.typography.body2,
+            modifier = Modifier
+                .constrainAs(subtitle) {
+                    start.linkTo(parent.start, 16.dp)
+                    end.linkTo(parent.end, 16.dp)
+                    bottom.linkTo(guideline, 32.dp)
+                    width = Dimension.fillToConstraints
+                },
+            textAlign = TextAlign.Center
+        )
     }
 }
 
@@ -250,9 +273,9 @@ fun PageIndicator(pagesCount: Int, currentPageIndex: Int, modifier: Modifier = M
     Row(modifier = modifier.wrapContentSize()) {
         for (pageIndex in 0 until pagesCount) {
             val (tint, width) = if (currentPageIndex == pageIndex) {
-                Color.White to 16.dp
+                JetpuppyTheme.colors.textPrimaryColor to 16.dp
             } else {
-                Color.White.copy(alpha = 0.5f) to 4.dp
+                JetpuppyTheme.colors.textPrimaryColor.copy(alpha = 0.5f) to 4.dp
             }
             Spacer(
                 modifier = Modifier

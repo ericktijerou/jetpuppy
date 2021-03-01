@@ -24,9 +24,9 @@ val Teal200 = Color(0xFF03DAC5)
 
 // Custom
 val BlackLight = Color(0xFF161617)
-val TealOnboarding = Color(0xFF27AA9E)
-val PurpleOnboarding = Color(0xFF5054C1)
-val OrangeOnboarding = Color(0xFFEB7F64)
+val TealOnboarding = Color(0xFFE2E1CE)
+val PurpleOnboarding = Color(0xFFD9DFF9)
+val OrangeOnboarding = Color(0xFFEFD3B6)
 
 val GraySearchBoxLight = Color(0xFFF2F3F5)
 val GraySearchBoxDark = Color(0xFF1F1F1F)
