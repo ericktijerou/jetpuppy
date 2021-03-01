@@ -45,7 +45,9 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -62,19 +64,22 @@ import com.airbnb.lottie.compose.rememberLottieAnimationState
 import com.ericktijerou.jetpuppy.R
 import com.ericktijerou.jetpuppy.util.Pager
 import com.ericktijerou.jetpuppy.util.PagerState
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun OnboardingScreen(items: List<OnboardingPage>, viewModel: OnboardingViewModel, skip: () -> Unit = {}) {
+fun OnboardingScreen(
+    items: List<OnboardingPage>,
+    viewModel: OnboardingViewModel,
+    skip: () -> Unit = {}
+) {
     val pagerState = remember { PagerState() }
+    val (isFinish, setFinish) = remember { mutableStateOf(false) }
     pagerState.maxPage = (items.size - 1).coerceAtLeast(0)
-    val skipInternal = {
-        skip()
-        viewModel.setOnboarding()
-    }
     val onboardingPage = items[pagerState.currentPage]
+    val color = if (isFinish) MaterialTheme.colors.primary else onboardingPage.color
     val backgroundColor by animateColorAsState(
-        onboardingPage.color,
+        color,
         spring(DampingRatioLowBouncy, StiffnessVeryLow)
     )
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
@@ -85,8 +90,10 @@ fun OnboardingScreen(items: List<OnboardingPage>, viewModel: OnboardingViewModel
             state = pagerState,
             modifier = Modifier.fillMaxSize()
         ) {
-            OnboardingPage(items[page], backgroundColor)
+            OnboardingPage(items[page], backgroundColor, isFinish)
         }
+
+        if (isFinish) return@ConstraintLayout
 
         PageIndicator(
             pagesCount = items.count(),
@@ -110,7 +117,7 @@ fun OnboardingScreen(items: List<OnboardingPage>, viewModel: OnboardingViewModel
             enter = slideInVertically(initialOffsetY = { 100 }),
             exit = slideOutVertically(targetOffsetY = { 100 })
         ) {
-            OnboardingOptions(skipInternal)
+            OnboardingOptions { setFinish(true) }
         }
 
         AnimatedVisibility(
@@ -126,7 +133,7 @@ fun OnboardingScreen(items: List<OnboardingPage>, viewModel: OnboardingViewModel
         ) {
             Button(
                 modifier = Modifier.wrapContentWidth(),
-                onClick = skipInternal,
+                onClick = { setFinish(true) },
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)
             ) {
@@ -135,6 +142,14 @@ fun OnboardingScreen(items: List<OnboardingPage>, viewModel: OnboardingViewModel
                     style = MaterialTheme.typography.button,
                 )
             }
+        }
+    }
+
+    LaunchedEffect(isFinish) {
+        if (isFinish) {
+            delay(500)
+            viewModel.setOnboarding()
+            skip()
         }
     }
 }
@@ -175,11 +190,12 @@ fun OnboardingOptions(skip: () -> Unit) {
 }
 
 @Composable
-fun OnboardingPage(item: OnboardingPage, color: Color) {
+fun OnboardingPage(item: OnboardingPage, color: Color, isFinish: Boolean) {
     Surface(color = color) {
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
         ) {
+            if (isFinish) return@ConstraintLayout
             val (image, title, subtitle) = createRefs()
             val guideline = createGuidelineFromBottom(0.2f)
             val animationSpec = remember { LottieAnimationSpec.RawRes(item.animation) }
