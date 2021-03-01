@@ -27,7 +27,6 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -117,7 +116,9 @@ fun OnboardingScreen(
             enter = slideInVertically(initialOffsetY = { 100 }),
             exit = slideOutVertically(targetOffsetY = { 100 })
         ) {
-            OnboardingOptions { setFinish(true) }
+            OnboardingOptions(skip = { setFinish(true) }, next = {
+                pagerState.currentPage += 1
+            })
         }
 
         AnimatedVisibility(
@@ -155,7 +156,7 @@ fun OnboardingScreen(
 }
 
 @Composable
-fun OnboardingOptions(skip: () -> Unit) {
+fun OnboardingOptions(skip: () -> Unit, next: () -> Unit) {
     ConstraintLayout(Modifier.fillMaxWidth()) {
         val (textSkip, textNext) = createRefs()
         TextButton(
@@ -173,9 +174,8 @@ fun OnboardingOptions(skip: () -> Unit) {
         }
 
         TextButton(
-            onClick = {},
+            onClick = next,
             modifier = Modifier
-                .clickable(onClick = { })
                 .constrainAs(textNext) {
                     end.linkTo(parent.end)
                 }
