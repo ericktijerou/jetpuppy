@@ -199,7 +199,7 @@ fun DogScreen(viewModel: DogViewModel, dogId: String, onBackPressed: () -> Unit)
 fun DogPageIndicator(modifier: Modifier, count: Int, currentPage: Int) {
     Box(modifier, contentAlignment = Alignment.Center) {
         DogGradient(modifier = Modifier.fillMaxSize(), 0f, 1f)
-        PageIndicator(pagesCount = count, currentPageIndex = currentPage)
+        PageIndicator(pagesCount = count, currentPageIndex = currentPage, color = Color.White)
     }
 }
 

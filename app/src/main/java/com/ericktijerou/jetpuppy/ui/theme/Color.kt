@@ -17,16 +17,13 @@ package com.ericktijerou.jetpuppy.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
 val Teal200 = Color(0xFF03DAC5)
 
-// Custom
 val BlackLight = Color(0xFF161617)
-val TealOnboarding = Color(0xFFE2E1CE)
 val PurpleOnboarding = Color(0xFFD9DFF9)
 val OrangeOnboarding = Color(0xFFEFD3B6)
+val BlueOnboardingLight = Color(0xFFC8DCEA)
+val BlueOnboarding = Color(0xFF6A91AC)
 
 val GraySearchBoxLight = Color(0xFFF2F3F5)
 val GraySearchBoxDark = Color(0xFF1F1F1F)

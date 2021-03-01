@@ -19,9 +19,9 @@ import androidx.annotation.RawRes
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
 import com.ericktijerou.jetpuppy.R
+import com.ericktijerou.jetpuppy.ui.theme.BlueOnboardingLight
 import com.ericktijerou.jetpuppy.ui.theme.OrangeOnboarding
 import com.ericktijerou.jetpuppy.ui.theme.PurpleOnboarding
-import com.ericktijerou.jetpuppy.ui.theme.TealOnboarding
 
 sealed class OnboardingPage(
     @StringRes val title: Int,
@@ -30,6 +30,6 @@ sealed class OnboardingPage(
     val color: Color
 ) {
     object Page1 : OnboardingPage(R.string.label_title_onboarding1, R.string.label_subtitle_onboarding1, R.raw.doggy, PurpleOnboarding)
-    object Page2 : OnboardingPage(R.string.label_title_onboarding2, R.string.label_subtitle_onboarding2, R.raw.dog, TealOnboarding)
-    object Page3 : OnboardingPage(R.string.label_title_onboarding3, R.string.label_subtitle_onboarding3, R.raw.happy_dog, OrangeOnboarding)
+    object Page2 : OnboardingPage(R.string.label_title_onboarding2, R.string.label_subtitle_onboarding2, R.raw.dog, OrangeOnboarding)
+    object Page3 : OnboardingPage(R.string.label_title_onboarding3, R.string.label_subtitle_onboarding3, R.raw.happy_dog, BlueOnboardingLight)
 }

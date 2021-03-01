@@ -32,4 +32,4 @@ data class Dog(
     @StringRes val summary: Int
 )
 
-fun Dog?.orEmpty() = this ?: Dog(EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, R.string.app_name)
+fun Dog?.orEmpty() = this ?: Dog(EMPTY, HomeSectionType.RECOMMENDED, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, R.string.app_name)

@@ -19,7 +19,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring.DampingRatioLowBouncy
-import androidx.compose.animation.core.Spring.StiffnessVeryLow
+import androidx.compose.animation.core.Spring.StiffnessLow
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -63,6 +63,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieAnimationSpec
 import com.airbnb.lottie.compose.rememberLottieAnimationState
 import com.ericktijerou.jetpuppy.R
+import com.ericktijerou.jetpuppy.ui.theme.BlueOnboarding
 import com.ericktijerou.jetpuppy.ui.theme.JetpuppyTheme
 import com.ericktijerou.jetpuppy.util.Pager
 import com.ericktijerou.jetpuppy.util.PagerState
@@ -82,9 +83,13 @@ fun OnboardingScreen(
     val color = if (isFinish) MaterialTheme.colors.primary else onboardingPage.color
     val backgroundColor by animateColorAsState(
         color,
-        spring(DampingRatioLowBouncy, StiffnessVeryLow)
+        spring(DampingRatioLowBouncy, StiffnessLow)
     )
-    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.primary)
+    ) {
         val (pagerIndicator, button, options, wave, waveBody) = createRefs()
         val guideline = createGuidelineFromBottom(0.2f)
         val guidelineWave = createGuidelineFromTop(0.5f)
@@ -121,6 +126,7 @@ fun OnboardingScreen(
         PageIndicator(
             pagesCount = items.count(),
             currentPageIndex = pagerState.currentPage,
+            color = JetpuppyTheme.colors.textPrimaryColor,
             modifier = Modifier
                 .padding(16.dp)
                 .constrainAs(pagerIndicator) {
@@ -163,11 +169,13 @@ fun OnboardingScreen(
                 modifier = Modifier.wrapContentWidth(),
                 onClick = { setFinish(true) },
                 shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)
+                colors = ButtonDefaults.buttonColors(backgroundColor = BlueOnboarding),
+                elevation = ButtonDefaults.elevation(defaultElevation = 0.dp)
             ) {
                 Text(
                     text = stringResource(R.string.label_get_started),
                     style = MaterialTheme.typography.button,
+                    color = Color.White
                 )
             }
         }
@@ -175,7 +183,7 @@ fun OnboardingScreen(
 
     LaunchedEffect(isFinish) {
         if (isFinish) {
-            delay(400)
+            delay(500)
             viewModel.setOnboarding()
             skip()
         }
@@ -271,13 +279,18 @@ fun OnboardingPage(item: OnboardingPage, isFinish: Boolean) {
 }
 
 @Composable
-fun PageIndicator(pagesCount: Int, currentPageIndex: Int, modifier: Modifier = Modifier) {
+fun PageIndicator(
+    pagesCount: Int,
+    currentPageIndex: Int,
+    color: Color,
+    modifier: Modifier = Modifier
+) {
     Row(modifier = modifier.wrapContentSize()) {
         for (pageIndex in 0 until pagesCount) {
             val (tint, width) = if (currentPageIndex == pageIndex) {
-                JetpuppyTheme.colors.textPrimaryColor to 16.dp
+                color to 16.dp
             } else {
-                JetpuppyTheme.colors.textPrimaryColor.copy(alpha = 0.5f) to 4.dp
+                color.copy(alpha = 0.5f) to 4.dp
             }
             Spacer(
                 modifier = Modifier
