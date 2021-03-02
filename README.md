@@ -51,6 +51,15 @@ The codebase focuses on following key things:
 - [Lottie Compose](https://github.com/airbnb/lottie/blob/master/android-compose.md) - Render After Effects animations natively on Android and iOS, Web, and React Native.
 - [Spotless](https://github.com/diffplug/spotless) - Keep your code spotless.
 
+## Inspiration
+
+- [Animations](https://lottiefiles.com/) - LottieFiles
+  - [Andy Dao](https://lottiefiles.com/user265314)
+  - [Margarita Ivanchikova](https://lottiefiles.com/user/279119)
+- [Pet adoption app concept](https://www.behance.net/gallery/100175719/Pet-adoption-app-concept?tracking_source=search_projects_recommended%7Cadoption%20app%20) - Behance
+- [Animal Adopt App](https://dribbble.com/shots/7062525-Animal-Adopt-Apps) - Dribbble
+
+
 ## License
 ```
 Copyright 2020 The Android Open Source Project
