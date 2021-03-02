@@ -1,3 +1,5 @@
+![Social Preview](results/social_preview.png)
+
 # Jetpuppy
 ![Workflow result](https://github.com/ericktijerou/jetpuppy/workflows/Check/badge.svg)
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.4.30-blueviolet.svg)](https://kotlinlang.org)
