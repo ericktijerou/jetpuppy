@@ -11,7 +11,7 @@ The purpose of this project is to try new Android technologies and learn how it 
 
 
 ## Motivation and Context
-I managed to make these animations very fast:
+Make Your Own Animation. It's so Easy!
 
  Swipe to expand | AnimateColorAsState | AnimatedVisibility
 --- | --- | --- |
