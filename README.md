@@ -15,9 +15,7 @@ I managed to make these animations very fast:
 
  Swipe to expand | AnimateColorAsState | AnimatedVisibility
 --- | --- | --- |
-![img](results/swipe_to_expand.gif) | ![img](results/visibility.gif) | ![img](results/animated_color.gif)
-
-
+![img](results/swipe_to_expand.gif) | ![img](results/animated_color.gif) | ![img](results/visibility.gif)
 
 ## Features  👓
 
