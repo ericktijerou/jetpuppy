@@ -6,10 +6,18 @@
 ![Compose](https://img.shields.io/badge/Compose-1.0.0--beta01-brightgreen)
 
 ## What's Jetpuppy? :rocket:
-Jetpuppy is a sample app using Jetpack Compose UI.
+Jetpuppy is a puppy adoption app using Jetpack Compose UI.
+The purpose of this project is to try new Android technologies and learn how it works in an app.
+
 
 ## Motivation and Context
-The purpose of this project is to try new Android technologies and learn how it works in an app.
+I managed to make these animations very fast:
+
+ Swipe to expand | AnimateColorAsState | AnimatedVisibility
+--- | --- | --- |
+![img](results/swipe_to_expand.gif) | ![img](results/visibility.gif) | ![img](results/animated_color.gif)
+
+
 
 ## Features  👓
 
