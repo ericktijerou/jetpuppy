@@ -22,7 +22,7 @@ The codebase focuses on following key things:
 
 
 ## Screenshots ✨
-<img src="/results/screenshot_1.png" width="260">&emsp;<img src="/results/screenshot_2.png" width="260">
+<img src="/results/screenshot_1.png" width="260">&emsp;<img src="/results/screenshot_2.png" width="260">&emsp;<img src="/results/screenshot_3.png" width="260">
 
 #### 🌞 Light Mode
 ![](results/light_theme.png)
